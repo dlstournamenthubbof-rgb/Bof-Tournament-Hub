@@ -75,7 +75,7 @@ function saveToStorage() {
   localStorage.setItem(storageKey, JSON.stringify(tournamentData));
 }
 
-// পয়েন্ট টেবিলের ভিত্তিতে নকআউট দলের নাম নির্ধারণ করার ফাংশন
+// নকআউট এবং গ্রুপ স্ট্যান্ডিং হিসাব করে সব ম্যাচ আপডেট করার ফাংশন
 function updateKnockoutTeams() {
   let standings = {};
   Object.keys(groupsConfig).forEach(g => {
@@ -85,6 +85,7 @@ function updateKnockoutTeams() {
     });
   });
 
+  // গ্রুপ পর্বের ম্যাচ হিসাব
   tournamentData.matches.forEach(m => {
     if(m.group && standings[m.group] && m.homeScore !== "" && m.awayScore !== "" && !isNaN(m.homeScore) && !isNaN(m.awayScore)) {
       let hs = parseInt(m.homeScore);
@@ -119,7 +120,6 @@ function updateKnockoutTeams() {
   });
 
   let groupRankings = {};
-
   Object.keys(groupsConfig).forEach(g => {
     let sortedTeams = Object.keys(standings[g]).sort((a, b) => {
       let tA = standings[g][a];
@@ -136,27 +136,56 @@ function updateKnockoutTeams() {
     };
   });
 
-  // কোয়ার্টার ফাইনালের ম্যাচগুলোতে পয়েন্ট টেবিল অনুযায়ী পজিশন বসানো
-  tournamentData.matches.forEach(m => {
-    if (m.stage === "Quarter Final") {
-      if (m.id === 25) { 
-        m.home = groupRankings["A"][1]; 
-        m.away = groupRankings["B"][2]; 
-      }
-      if (m.id === 26) { 
-        m.home = groupRankings["C"][1]; 
-        m.away = groupRankings["D"][2]; 
-      }
-      if (m.id === 27) { 
-        m.home = groupRankings["B"][1]; 
-        m.away = groupRankings["A"][2]; 
-      }
-      if (m.id === 28) { 
-        m.home = groupRankings["D"][1]; 
-        m.away = groupRankings["C"][2]; 
-      }
-    }
-  });
+  //ম্যাচ অবজেক্ট পাওয়ার শর্টকাট ফাংশন
+  let getMatch = (id) => tournamentData.matches.find(m => m.id === id);
+
+  // ১. কোয়ার্টার ফাইনাল আপডেট
+  let qf25 = getMatch(25), qf26 = getMatch(26), qf27 = getMatch(27), qf28 = getMatch(28);
+  if(qf25) { qf25.home = groupRankings["A"][1]; qf25.away = groupRankings["B"][2]; }
+  if(qf26) { qf26.home = groupRankings["C"][1]; qf26.away = groupRankings["D"][2]; }
+  if(qf27) { qf27.home = groupRankings["B"][1]; qf27.away = groupRankings["A"][2]; }
+  if(qf28) { qf28.home = groupRankings["D"][1]; qf28.away = groupRankings["C"][2]; }
+
+  // উইনার বা লুজার বের করার হেল্পার ফাংশন
+  function getWinner(match) {
+    if(!match || match.homeScore === "" || match.awayScore === "" || isNaN(match.homeScore) || isNaN(match.awayScore)) return null;
+    let hs = parseInt(match.homeScore);
+    let as = parseInt(match.awayScore);
+    if(hs > as) return match.home;
+    if(as > hs) return match.away;
+    return null;
+  }
+
+  function getLoser(match) {
+    if(!match || match.homeScore === "" || match.awayScore === "" || isNaN(match.homeScore) || isNaN(match.awayScore)) return null;
+    let hs = parseInt(match.homeScore);
+    let as = parseInt(match.awayScore);
+    if(hs < as) return match.home;
+    if(as < hs) return match.away;
+    return null;
+  }
+
+  // ২. সেমিফাইনাল আপডেট (QF 1, 2, 3, 4 এর বিজয়ী দলগুলো)
+  let sf29 = getMatch(29), sf30 = getMatch(30);
+  if(sf29) {
+    sf29.home = getWinner(qf25) || "Winner QF 1";
+    sf29.away = getWinner(qf26) || "Winner QF 2";
+  }
+  if(sf30) {
+    sf30.home = getWinner(qf27) || "Winner QF 3";
+    sf30.away = getWinner(qf28) || "Winner QF 4";
+  }
+
+  // ৩. তৃতীয় স্থান ও ফাইনাল আপডেট
+  let third31 = getMatch(31), final32 = getMatch(32);
+  if(third31) {
+    third31.home = getLoser(sf29) || "Loser SF 1";
+    third31.away = getLoser(sf30) || "Loser SF 2";
+  }
+  if(final32) {
+    final32.home = getWinner(sf29) || "Winner SF 1";
+    final32.away = getWinner(sf30) || "Winner SF 2";
+  }
 }
 
 loadFromStorage();

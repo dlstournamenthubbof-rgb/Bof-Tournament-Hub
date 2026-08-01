@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UEFA Champions League - Admin Manage Panel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #0c1c38 0%, #060a12 100%);
+      --card-bg: rgba(20, 30, 50, 0.7);
+      --card-border: rgba(56, 189, 248, 0.3);
+      --primary-color: #38bdf8;
+      --accent-color: #38bdf8;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: var(--bg-gradient); color: var(--text-main); min-height: 100vh; padding: 20px 15px; }
+    .container { max-width: 480px; margin: 0 auto; }
+    
+    .admin-header {
+      background: var(--card-bg); backdrop-filter: blur(25px);
+      border: 1px solid var(--card-border); border-radius: 24px;
+      padding: 20px; margin-bottom: 25px; text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(56, 189, 248, 0.2);
+    }
+    .admin-header h1 {
+      font-size: 1.3rem; color: #fff; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    }
+    .admin-header h1 i { color: var(--accent-color); filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6)); }
+
+    /* Action Buttons Bar (Reset & Backup) */
+    .admin-actions-bar {
+      display: flex; gap: 10px; margin-bottom: 25px;
+    }
+    .action-btn {
+      flex: 1; padding: 10px 8px; border-radius: 14px; font-size: 0.72rem; font-weight: 700; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.3s; color: #fff;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+    .btn-reset { background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; }
+    .btn-reset:hover { background: rgba(239, 68, 68, 0.35); box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); }
+    .btn-export { background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; }
+    .btn-export:hover { background: rgba(16, 185, 129, 0.35); box-shadow: 0 0 15px rgba(16, 185, 129, 0.3); }
+    .btn-import { background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; }
+    .btn-import:hover { background: rgba(56, 189, 248, 0.35); box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
+
+    .section-box {
+      background: rgba(10, 15, 28, 0.8); backdrop-filter: blur(20px);
+      border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 18px; padding: 16px; margin-bottom: 25px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.1);
+    }
+    
+    .filter-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 15px; scrollbar-width: none; }
+    .filter-tabs::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(56, 189, 248, 0.2); color: var(--text-sub);
+      padding: 6px 14px; border-radius: 14px; font-size: 0.72rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.3s;
+    }
+    .filter-btn.active { background: var(--primary-color); color: #0c1c38; border-color: transparent; font-weight: 700; box-shadow: 0 0 12px rgba(56, 189, 248, 0.5); }
+    
+    .match-card {
+      background: rgba(20, 30, 50, 0.7); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 14px;
+      padding: 12px 14px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;
+      transition: 0.3s ease;
+    }
+    .match-card:hover {
+      border-color: rgba(56, 189, 248, 0.6);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4), 0 0 15px rgba(56, 189, 248, 0.2);
+    }
+    .match-info-top { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-sub); font-weight: 600; }
+    .match-middle { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .team-name { font-size: 0.82rem; font-weight: 700; width: 35%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.2); }
+    .score-inputs-box { display: flex; align-items: center; gap: 6px; justify-content: center; width: 30%; }
+    .score-inputs-box input {
+      width: 38px; height: 38px; background: rgba(5, 10, 20, 0.9); border: 1px solid rgba(56, 189, 248, 0.3); color: #fff;
+      text-align: center; border-radius: 10px; font-weight: bold; font-size: 0.95rem; outline: none;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .score-inputs-box input:focus { border-color: var(--accent-color); box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
+    .score-inputs-box span { font-weight: bold; color: var(--accent-color); }
+    
+    .save-match-btn {
+      width: 100%; background: linear-gradient(135deg, #38bdf8, #0284c7); color: #0c1c38; border: none;
+      padding: 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 800; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.3s;
+      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+    }
+    .save-match-btn:hover { box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5); transform: translateY(-1px); }
+    .save-match-btn:active { transform: scale(0.98); }
+    
+    .success-alert {
+      background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399;
+      padding: 10px 14px; border-radius: 14px; margin-bottom: 20px; font-size: 0.8rem; display: none; text-align: center; font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="admin-header">
+      <h1><i class="fa-solid fa-user-gear"></i> UEFA Admin Manage</h1>
+    </header>
+
+    <div id="alertBox" class="success-alert"><i class="fa-solid fa-circle-check"></i> Action Completed Successfully!</div>
+
+    <!-- Tournament Control Actions (Reset & Save/Export/Import) -->
+    <div class="admin-actions-bar">
+      <button class="action-btn btn-reset" onclick="resetTournament()"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+      <button class="action-btn btn-export" onclick="exportTournamentData()"><i class="fa-solid fa-download"></i> Save/Export</button>
+      <button class="action-btn btn-import" onclick="triggerImport()"><i class="fa-solid fa-upload"></i> Import</button>
+      <input type="file" id="importFile" style="display: none;" accept=".json" onchange="importTournamentData(event)">
+    </div>
+
+    <div class="section-box">
+      <div class="filter-tabs">
+        <button class="filter-btn active" onclick="filterMatches('All', this)">All</button>
+        <button class="filter-btn" onclick="filterMatches('Round 1', this)">Round 1</button>
+        <button class="filter-btn" onclick="filterMatches('Round 2', this)">Round 2</button>
+        <button class="filter-btn" onclick="filterMatches('Round 3', this)">Round 3</button>
+        <button class="filter-btn" onclick="filterMatches('Round of 16', this)">R-16</button>
+        <button class="filter-btn" onclick="filterMatches('Quarter Final', this)">QF</button>
+        <button class="filter-btn" onclick="filterMatches('Semi Final', this)">SF</button>
+        <button class="filter-btn" onclick="filterMatches('Final', this)">Final</button>
+      </div>
+      <div id="admin-fixtures-container"></div>
+    </div>
+  </div>
+
+  <script src="uefa-core.js"></script>
+  <script>
+    let currentFilter = 'All';
+
+    function renderAdminFixtures() {
+      const container = document.getElementById('admin-fixtures-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (typeof allMatches === 'undefined') {
+        container.innerHTML = '<p style="color:red; text-align:center;">Error: uefa-core.js not loaded!</p>';
+        return;
+      }
+
+      allMatches.forEach((match, index) => {
+        if (currentFilter !== 'All' && match.stage !== currentFilter) return;
+
+        container.innerHTML += `
+          <div class="match-card">
+            <div class="match-info-top">
+              <span>Match #${match.id || (index + 1)} (${match.group || match.stage})</span>
+              <span style="color: #38bdf8;">${match.stage}</span>
+            </div>
+            <div class="match-middle">
+              <div class="team-name" style="text-align: right;">${match.home}</div>
+              <div class="score-inputs-box">
+                <input type="number" id="hs_${index}" value="${match.homeScore !== undefined ? match.homeScore : ''}" min="0">
+                <span>:</span>
+                <input type="number" id="as_${index}" value="${match.awayScore !== undefined ? match.awayScore : ''}" min="0">
+              </div>
+              <div class="team-name" style="text-align: left;">${match.away}</div>
+            </div>
+            <button class="save-match-btn" onclick="saveAdminMatch(${index})">
+              <i class="fa-solid fa-floppy-disk"></i> Save Score
+            </button>
+          </div>
+        `;
+      });
+    }
+
+    function filterMatches(stage, btn) {
+      currentFilter = stage;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderAdminFixtures();
+    }
+
+    function saveAdminMatch(index) {
+      allMatches[index].homeScore = document.getElementById(`hs_${index}`).value;
+      allMatches[index].awayScore = document.getElementById(`as_${index}`).value;
+
+      saveToStorage();
+      showAlert("Score Saved Successfully!");
+      renderAdminFixtures();
+    }
+
+    // --- Tournament Reset Function ---
+    function resetTournament() {
+      if(confirm("Are you sure you want to reset all scores and tournament data?")) {
+        localStorage.removeItem(storageKey);
+        location.reload();
+      }
+    }
+
+    // --- Save/Export Tournament Data to a JSON file ---
+    function exportTournamentData() {
+      let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tournamentData, null, 2));
+      let downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "uefa_tournament_backup.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showAlert("Tournament Data Exported Successfully!");
+    }
+
+    // --- Import Tournament Data ---
+    function triggerImport() {
+      document.getElementById('importFile').click();
+    }
+
+    function importTournamentData(event) {
+      let fileReader = new FileReader();
+      if(event.target.files[0]) {
+        fileReader.readAsText(event.target.files[0], "UTF-8");
+        fileReader.onload = function(e) {
+          try {
+            let importedData = JSON.parse(e.target.result);
+            if(importedData && importedData.matches) {
+              tournamentData = importedData;
+              allMatches = tournamentData.matches;
+              saveToStorage();
+              renderAdminFixtures();
+              showAlert("Tournament Data Imported Successfully!");
+            } else {
+              alert("Invalid backup file format!");
+            }
+          } catch(err) {
+            alert("Error parsing JSON file!");
+          }
+        }
+      }
+    }
+
+    function showAlert(msg) {
+      const alertBox = document.getElementById('alertBox');
+      alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${msg}`;
+      alertBox.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => { alertBox.style.display = 'none'; }, 2000);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderAdminFixtures();
+    });
+  </script>
+</body>
+</html>

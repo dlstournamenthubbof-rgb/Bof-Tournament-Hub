@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premier League - DLS Tournament Hub</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; }
+    body {
+      background: #040a16;
+      background-image: radial-gradient(circle at 10% 10%, rgba(56, 0, 60, 0.2) 0%, transparent 40%), radial-gradient(circle at 90% 90%, rgba(0, 210, 255, 0.08) 0%, transparent 40%);
+      color: #ffffff; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; padding: 15px; overflow-x: hidden;
+    }
+    .app-container {
+      width: 100%; max-width: 450px; background: rgba(10, 22, 44, 0.65); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(140, 0, 160, 0.25); border-radius: 28px; padding: 22px 18px 30px 18px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7); animation: fadeIn 0.5s ease-out;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    .header-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; }
+    .back-btn { width: 42px; height: 42px; background: rgba(15, 30, 58, 0.8); border: 1px solid rgba(140, 0, 160, 0.3); border-radius: 12px; color: #8da2c0; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 16px; transition: all 0.3s ease; }
+    .back-btn:hover { color: #e056fd; border-color: #e056fd; }
+    .header-title { display: flex; align-items: center; gap: 8px; }
+    .header-title i { color: #e056fd; font-size: 18px; }
+    .header-title h2 { font-size: 13px; font-weight: 700; color: #ffffff; text-transform: uppercase; }
+    .live-badge { background: rgba(255, 59, 48, 0.15); border: 1px solid rgba(255, 59, 48, 0.5); color: #ff3b30; padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: 800; display: flex; align-items: center; gap: 5px; }
+    .live-dot { width: 6px; height: 6px; background-color: #ff3b30; border-radius: 50%; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+    .hero-section { text-align: center; background: linear-gradient(135deg, rgba(140, 0, 160, 0.2) 0%, rgba(20, 0, 50, 0.15) 100%); border: 1px solid rgba(140, 0, 160, 0.3); border-radius: 22px; padding: 28px 15px; margin-bottom: 25px; }
+    .hero-welcome { font-size: 11px; font-weight: 600; color: #e056fd; text-transform: uppercase; letter-spacing: 2px; }
+    .hero-title { font-size: 22px; font-weight: 800; color: #ffffff; text-transform: uppercase; }
+    .hero-subtitle { font-size: 12px; color: #8da2c0; margin-top: 6px; }
+    .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 25px; }
+    .menu-card { background: linear-gradient(145deg, rgba(16, 33, 65, 0.8), rgba(8, 18, 38, 0.9)); border: 1px solid rgba(140, 0, 160, 0.2); border-radius: 22px; padding: 25px 15px; display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #ffffff; transition: all 0.3s ease; }
+    .menu-card:hover { transform: translateY(-4px); border-color: rgba(224, 86, 253, 0.5); }
+    .icon-box { width: 60px; height: 60px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 14px; }
+    .icon-teams { background: linear-gradient(135deg, #be2edd, #4834d4); }
+    .icon-fixtures { background: linear-gradient(135deg, #0984e3, #00cec9); }
+    .icon-points { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
+    .icon-knockout { background: linear-gradient(135deg, #f0932b, #ffbe76); }
+    .card-title { font-size: 15px; font-weight: 600; }
+    .footer-text { text-align: center; font-size: 11px; color: #5c7294; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="header-nav">
+      <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+      <div class="header-title"><i class="fa-solid fa-crown"></i><h2>PREMIER LEAGUE</h2></div>
+      <div class="live-badge"><span class="live-dot"></span><span>LIVE</span></div>
+    </header>
+    <section class="hero-section">
+      <p class="hero-welcome">Welcome To</p>
+      <h1 class="hero-title">PREMIER LEAGUE</h1>
+      <p class="hero-subtitle">Official Tournament Hub</p>
+    </section>
+    <main class="menu-grid">
+      <a href="premier-teams.html" class="menu-card"><div class="icon-box icon-teams"><i class="fa-solid fa-users"></i></div><span class="card-title">Teams</span></a>
+      <a href="premier-fixtures.html" class="menu-card"><div class="icon-box icon-fixtures"><i class="fa-solid fa-calendar-days"></i></div><span class="card-title">Fixtures</span></a>
+      <a href="premier-points.html" class="menu-card"><div class="icon-box icon-points"><i class="fa-solid fa-list-ol"></i></div><span class="card-title">Points Table</span></a>
+      <a href="premier-knockout.html" class="menu-card"><div class="icon-box icon-knockout"><i class="fa-solid fa-trophy"></i></div><span class="card-title">Knockout</span></a>
+    </main>
+    <footer class="footer-text">DLS TOURNAMENT HUB • 2026 EDITION</footer>
+  </div>
+</body>
+</html>

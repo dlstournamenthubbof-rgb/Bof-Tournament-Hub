@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premier - Match Fixtures & Results</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #090514 100%);
+      --card-bg: rgba(30, 27, 75, 0.7);
+      --card-border: rgba(168, 85, 247, 0.3);
+      --accent-color: #c084fc;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: var(--bg-gradient); color: var(--text-main); min-height: 100vh; padding: 20px 15px; }
+    .container { max-width: 480px; margin: 0 auto; }
+
+    .page-header {
+      background: var(--card-bg); backdrop-filter: blur(25px);
+      border: 1px solid var(--card-border); border-radius: 24px;
+      padding: 20px; margin-bottom: 25px; text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(168, 85, 247, 0.2);
+    }
+    .page-header h2 {
+      font-size: 1.3rem; color: #fff; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      text-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+    }
+    .page-header h2 i { color: var(--accent-color); filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.6)); }
+
+    .section-title {
+      color: var(--accent-color); margin: 25px 0 14px 0; font-size: 1rem; font-weight: 700;
+      border-bottom: 1px solid rgba(168, 85, 247, 0.3); padding-bottom: 8px;
+      display: flex; align-items: center; gap: 8px;
+      text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+    }
+
+    .match-card-wrapper { margin-bottom: 12px; }
+    .match-info { font-size: 0.72rem; color: var(--text-sub); text-align: center; margin-bottom: 5px; font-weight: 600; }
+    
+    .match-box {
+      background: rgba(15, 10, 30, 0.8); backdrop-filter: blur(20px);
+      border-radius: 18px; padding: 14px 18px;
+      display: flex; justify-content: space-between; align-items: center;
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.1);
+    }
+
+    .team { width: 35%; font-weight: 700; font-size: 0.82rem; color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.2); }
+    
+    .score {
+      background: linear-gradient(135deg, rgba(10, 5, 20, 0.95), rgba(30, 27, 75, 0.9));
+      padding: 8px 16px; border-radius: 12px; font-weight: 800; color: var(--accent-color); font-size: 1rem;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="page-header">
+      <h2><i class="fa-solid fa-calendar-days"></i> Premier Fixtures</h2>
+    </div>
+    <div id="public-fixtures"></div>
+  </div>
+
+  <script src="epl-core.js"></script>
+  <script>
+    const container = document.getElementById('public-fixtures');
+    
+    for(let r = 1; r <= 19; r++) {
+      let stageName = `Round ${r}`;
+      let matchesInRound = allMatches.filter(m => m.stage === stageName);
+      
+      if(matchesInRound.length > 0) {
+        container.innerHTML += `<div class="section-title"><i class="fa-solid fa-star"></i> ${stageName}</div>`;
+        
+        matchesInRound.forEach(m => {
+          container.innerHTML += `
+            <div class="match-card-wrapper">
+              <div class="match-info">Match #${m.id}</div>
+              <div class="match-box">
+                <div class="team" style="text-align: right;">${m.home}</div>
+                <div class="score">${m.homeScore !== "" ? m.homeScore : '-'} : ${m.awayScore !== "" ? m.awayScore : '-'}</div>
+                <div class="team" style="text-align: left;">${m.away}</div>
+              </div>
+            </div>
+          `;
+        });
+      }
+    }
+  </script>
+</body>
+</html>

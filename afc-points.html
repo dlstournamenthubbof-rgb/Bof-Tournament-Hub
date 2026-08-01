@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AFC Asian Cup - Points Table</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #0c1c38 0%, #060a12 100%);
+      --card-bg: rgba(20, 30, 50, 0.7);
+      --card-border: rgba(56, 189, 248, 0.3);
+      --accent-color: #38bdf8;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: var(--bg-gradient); color: var(--text-main); min-height: 100vh; padding: 20px 15px; }
+    .container { max-width: 480px; margin: 0 auto; }
+
+    .page-header {
+      background: var(--card-bg); backdrop-filter: blur(25px);
+      border: 1px solid var(--card-border); border-radius: 24px;
+      padding: 20px; margin-bottom: 25px; text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(56, 189, 248, 0.2);
+    }
+    .page-header h2 {
+      font-size: 1.3rem; color: #fff; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    }
+    .page-header h2 i { color: var(--accent-color); filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6)); }
+
+    .group-section {
+      background: rgba(10, 15, 28, 0.8); backdrop-filter: blur(20px);
+      border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 18px; padding: 14px; margin-bottom: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+    .group-title {
+      color: var(--accent-color); font-size: 0.95rem; font-weight: 700; margin-bottom: 10px;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 6px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    
+    table { width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: center; }
+    th { background: rgba(56, 189, 248, 0.15); color: var(--accent-color); padding: 8px 4px; font-weight: 700; }
+    th:nth-child(2) { text-align: left; }
+    td { padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #fff; font-weight: 500; }
+    td:nth-child(2) { text-align: left; font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="page-header">
+      <h2><i class="fa-solid fa-ranking-star"></i> Points Table</h2>
+    </div>
+    <div id="points-container"></div>
+  </div>
+
+  <script src="afc-core.js"></script>
+  <script>
+    const groups = {
+      "Group A": ["Australia", "Iran", "Jordan", "Uzbekistan"],
+      "Group B": ["Bangladesh", "Oman", "Qatar", "United Arab Emirates (UAE)"],
+      "Group C": ["Bahrain", "Iraq", "Japan", "Thailand"],
+      "Group D": ["Indonesia", "Saudi Arabia", "South Korea", "Vietnam"]
+    };
+
+    function calculateStandings() {
+      let standings = {};
+      Object.keys(groups).forEach(g => {
+        standings[g] = {};
+        groups[g].forEach(team => {
+          standings[g][team] = { played: 0, won: 0, drawn: 0, lost: 0, gf: 0, ga: 0, gd: 0, pts: 0 };
+        });
+      });
+
+      allMatches.forEach(m => {
+        if(m.group && standings[m.group] && m.homeScore !== "" && m.awayScore !== "" && !isNaN(m.homeScore) && !isNaN(m.awayScore)) {
+          let hs = parseInt(m.homeScore);
+          let as = parseInt(m.awayScore);
+          let home = m.home;
+          let away = m.away;
+
+          if(standings[m.group][home] && standings[m.group][away]) {
+            standings[m.group][home].played++;
+            standings[m.group][away].played++;
+
+            standings[m.group][home].gf += hs;
+            standings[m.group][home].ga += as;
+            standings[m.group][away].gf += as;
+            standings[m.group][away].ga += hs;
+
+            if(hs > as) {
+              standings[m.group][home].won++;
+              standings[m.group][home].pts += 3;
+              standings[m.group][away].lost++;
+            } else if(hs < as) {
+              standings[m.group][away].won++;
+              standings[m.group][away].pts += 3;
+              standings[m.group][home].lost++;
+            } else {
+              standings[m.group][home].drawn++;
+              standings[m.group][home].pts += 1;
+              standings[m.group][away].drawn++;
+              standings[m.group][away].pts += 1;
+            }
+          }
+        }
+      });
+
+      Object.keys(groups).forEach(g => {
+        Object.keys(standings[g]).forEach(team => {
+          standings[g][team].gd = standings[g][team].gf - standings[g][team].ga;
+        });
+      });
+
+      return standings;
+    }
+
+    const container = document.getElementById('points-container');
+    let standingsData = calculateStandings();
+
+    Object.keys(standingsData).forEach(groupName => {
+      let sortedTeams = Object.keys(standingsData[groupName]).sort((a, b) => {
+        let tA = standingsData[groupName][a];
+        let tB = standingsData[groupName][b];
+        if(tB.pts !== tA.pts) return tB.pts - tA.pts;
+        if(tB.gd !== tA.gd) return tB.gd - tA.gd;
+        return tB.gf - tA.gf;
+      });
+
+      let rowsHTML = '';
+      sortedTeams.forEach((team, index) => {
+        let t = standingsData[groupName][team];
+        rowsHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${team}</td>
+            <td>${t.played}</td>
+            <td>${t.won}</td>
+            <td>${t.drawn}</td>
+            <td>${t.lost}</td>
+            <td>${t.gd > 0 ? '+' + t.gd : t.gd}</td>
+            <td><b>${t.pts}</b></td>
+          </tr>
+        `;
+      });
+
+      container.innerHTML += `
+        <div class="group-section">
+          <div class="group-title"><i class="fa-solid fa-shield-halved"></i> ${groupName}</div>
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Team</th>
+                <th>P</th>
+                <th>W</th>
+                <th>D</th>
+                <th>L</th>
+                <th>GD</th>
+                <th>Pts</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rowsHTML}
+            </tbody>
+          </table>
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>

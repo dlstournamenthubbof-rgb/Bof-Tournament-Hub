@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DLS Tournament Hub - Admin Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #0c1c38 0%, #060a12 100%);
+      --card-bg: rgba(20, 30, 50, 0.7);
+      --card-border: rgba(56, 189, 248, 0.3);
+      --accent-color: #38bdf8;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: var(--bg-gradient); color: var(--text-main); min-height: 100vh; padding: 20px 15px; }
+    .container { max-width: 480px; margin: 0 auto; }
+
+    /* Login Overlay */
+    .login-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 50% 0%, #0c1c38 0%, #060a12 100%);
+      display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 9999;
+    }
+    .login-card {
+      background: rgba(10, 15, 28, 0.85); backdrop-filter: blur(20px);
+      border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 24px; padding: 30px 20px;
+      width: 100%; max-width: 360px; text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(56, 189, 248, 0.2);
+    }
+    .lock-icon-box {
+      width: 65px; height: 65px; margin: 0 auto 18px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(56, 189, 248, 0.05));
+      border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 26px; color: var(--accent-color);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+    }
+    .login-card h2 { color: #fff; font-size: 19px; font-weight: 700; margin-bottom: 5px; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+    .login-card p { color: var(--text-sub); font-size: 12px; margin-bottom: 22px; }
+    .input-group { position: relative; margin-bottom: 15px; }
+    .input-group i.left-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--accent-color); }
+    .input-group input {
+      width: 100%; padding: 13px 45px; background: rgba(5, 10, 20, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 14px; color: #fff; font-size: 14px; outline: none;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .input-group input:focus { border-color: var(--accent-color); box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); }
+    .toggle-pass { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--text-sub); cursor: pointer; }
+    .error-msg { color: #f87171; font-size: 11px; font-weight: 600; margin-bottom: 12px; display: none; text-shadow: 0 0 8px rgba(248, 113, 113, 0.4); }
+    .login-btn {
+      width: 100%; padding: 13px; background: linear-gradient(135deg, #38bdf8, #0284c7);
+      border: none; border-radius: 14px; color: #0c1c38; font-size: 14px; font-weight: 800; cursor: pointer;
+      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3); transition: 0.3s;
+    }
+    .login-btn:hover { box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5); transform: translateY(-1px); }
+
+    /* Admin Hub Content */
+    #adminContent { display: none; }
+    .admin-header {
+      background: var(--card-bg); backdrop-filter: blur(25px);
+      border: 1px solid var(--card-border); border-radius: 24px;
+      padding: 20px; margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(56, 189, 248, 0.2);
+    }
+    .header-title h1 {
+      font-size: 1.3rem; color: #fff; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
+      text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    }
+    .admin-badge {
+      background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.4); color: var(--accent-color);
+      padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 700;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.2); display: flex; align-items: center; gap: 6px;
+    }
+
+    .hub-title {
+      font-size: 1rem; color: var(--accent-color); margin-bottom: 16px; font-weight: 700;
+      display: flex; align-items: center; gap: 8px; text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+    }
+    
+    .tournament-grid { display: flex; flex-direction: column; gap: 14px; }
+    .admin-tournament-card {
+      background: rgba(10, 15, 28, 0.8); backdrop-filter: blur(20px);
+      border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 18px; padding: 18px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.1);
+      transition: 0.3s ease;
+    }
+    .admin-tournament-card:hover {
+      border-color: rgba(56, 189, 248, 0.8);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6), 0 0 20px rgba(56, 189, 248, 0.35);
+      transform: translateY(-2px);
+    }
+    .admin-tournament-card h3 {
+      font-size: 0.95rem; color: #fff; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;
+      font-weight: 700; text-shadow: 0 0 8px rgba(255,255,255,0.2);
+    }
+    .admin-tournament-card p { font-size: 0.72rem; color: var(--text-sub); margin-bottom: 14px; font-weight: 600; }
+    
+    .btn-open {
+      width: 100%; padding: 10px; background: linear-gradient(135deg, #38bdf8, #0284c7);
+      border: none; border-radius: 12px; color: #0c1c38; font-weight: 800; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.8rem;
+      text-decoration: none; transition: 0.3s; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+    }
+    .btn-open:hover { box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5); transform: translateY(-1px); }
+    .btn-open:active { transform: scale(0.98); }
+  </style>
+</head>
+<body>
+
+  <!-- Login Overlay -->
+  <div id="loginOverlay" class="login-overlay">
+    <div class="login-card">
+      <div class="lock-icon-box"><i class="fa-solid fa-user-shield"></i></div>
+      <h2>Admin Access</h2>
+      <p>DLS Tournament Hub</p>
+      <form onsubmit="verifyPassword(event)">
+        <div class="input-group">
+          <i class="fa-solid fa-key left-icon"></i>
+          <input type="password" id="adminPass" placeholder="Enter Password" required>
+          <i class="fa-regular fa-eye toggle-pass" onclick="togglePassVisibility()"></i>
+        </div>
+        <div id="errorMsg" class="error-msg"><i class="fa-solid fa-triangle-exclamation"></i> Invalid Password!</div>
+        <button type="submit" class="login-btn"><i class="fa-solid fa-unlock"></i> Unlock Dashboard</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main Tournament Selection Dashboard -->
+  <div id="adminContent" class="container">
+    <header class="admin-header">
+      <div class="header-title"><h1>DLS Admin Hub</h1></div>
+      <span class="admin-badge"><i class="fa-solid fa-shield-halved"></i> Secured</span>
+    </header>
+
+    <div class="hub-title"><i class="fa-solid fa-trophy" style="color: #38bdf8; filter: drop-shadow(0 0 8px rgba(56,189,248,0.6));"></i> Select Tournament File</div>
+
+    <div class="tournament-grid">
+      <!-- 1. FIFA World Cup -->
+      <div class="admin-tournament-card">
+        <h3><i class="fa-solid fa-earth-americas" style="color:#38bdf8;"></i> FIFA WORLD CUP</h3>
+        <p>Opens: fifa-admin-manage.html</p>
+        <a href="fifa-admin-manage.html" class="btn-open"><i class="fa-solid fa-arrow-right-to-bracket"></i> Open FIFA Panel</a>
+      </div>
+
+      <!-- 2. UEFA Champions League -->
+      <div class="admin-tournament-card">
+        <h3><i class="fa-solid fa-star" style="color:#38bdf8;"></i> UEFA CHAMPIONS LEAGUE</h3>
+        <p>Opens: uefa-admin.html</p>
+        <a href="uefa-admin.html" class="btn-open"><i class="fa-solid fa-arrow-right-to-bracket"></i> Open UEFA Panel</a>
+      </div>
+
+      <!-- 3. Copa America -->
+      <div class="admin-tournament-card">
+        <h3><i class="fa-solid fa-futbol" style="color:#38bdf8;"></i> COPA AMERICA</h3>
+        <p>Opens: copa-admin.html</p>
+        <a href="copa-admin.html" class="btn-open"><i class="fa-solid fa-arrow-right-to-bracket"></i> Open Copa Panel</a>
+      </div>
+
+      <!-- 4. Premier League -->
+      <div class="admin-tournament-card">
+        <h3><i class="fa-solid fa-shield-cat" style="color:#38bdf8;"></i> PREMIER LEAGUE</h3>
+        <p>Opens: premier-admin.html</p>
+        <a href="premier-admin.html" class="btn-open"><i class="fa-solid fa-arrow-right-to-bracket"></i> Open Premier Panel</a>
+      </div>
+
+      <!-- 5. AFC Asian Cup -->
+      <div class="admin-tournament-card">
+        <h3><i class="fa-solid fa-flag" style="color:#38bdf8;"></i> AFC ASIAN CUP</h3>
+        <p>Opens: asian-admin.html</p>
+        <a href="asian-admin.html" class="btn-open"><i class="fa-solid fa-arrow-right-to-bracket"></i> Open Asian Cup Panel</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function verifyPassword(e) {
+      e.preventDefault();
+      const inputPass = document.getElementById('adminPass').value;
+      const errorMsg = document.getElementById('errorMsg');
+      if (inputPass === "sayed0909") {
+        document.getElementById('loginOverlay').style.display = "none";
+        document.getElementById('adminContent').style.display = "block";
+      } else {
+        errorMsg.style.display = "block";
+        document.getElementById('adminPass').value = "";
+      }
+    }
+
+    function togglePassVisibility() {
+      const passInput = document.getElementById('adminPass');
+      const icon = document.querySelector('.toggle-pass');
+      if (passInput.type === "password") {
+        passInput.type = "text";
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+      } else {
+        passInput.type = "password";
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premier - Points Table</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #090514 100%);
+      --card-bg: rgba(30, 27, 75, 0.7);
+      --card-border: rgba(168, 85, 247, 0.3);
+      --accent-color: #c084fc;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: var(--bg-gradient); color: var(--text-main); min-height: 100vh; padding: 20px 15px; }
+    .container { max-width: 480px; margin: 0 auto; }
+
+    .page-header {
+      background: var(--card-bg); backdrop-filter: blur(25px);
+      border: 1px solid var(--card-border); border-radius: 24px;
+      padding: 20px; margin-bottom: 25px; text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(168, 85, 247, 0.2);
+    }
+    .page-header h2 {
+      font-size: 1.3rem; color: #fff; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      text-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+    }
+    .page-header h2 i { color: var(--accent-color); filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.6)); }
+
+    .table-section {
+      background: rgba(15, 10, 30, 0.8); backdrop-filter: blur(20px);
+      border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 18px; padding: 14px; margin-bottom: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+    
+    table { width: 100%; border-collapse: collapse; font-size: 0.72rem; text-align: center; }
+    th { background: rgba(168, 85, 247, 0.15); color: var(--accent-color); padding: 8px 3px; font-weight: 700; }
+    th:nth-child(2) { text-align: left; }
+    td { padding: 8px 3px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #fff; font-weight: 500; }
+    td:nth-child(2) { text-align: left; font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="page-header">
+      <h2><i class="fa-solid fa-ranking-star"></i> Premier Points Table</h2>
+    </div>
+    
+    <div class="table-section">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Team</th>
+            <th>P</th>
+            <th>W</th>
+            <th>D</th>
+            <th>L</th>
+            <th>GD</th>
+            <th>Pts</th>
+          </tr>
+        </thead>
+        <tbody id="points-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="epl-core.js"></script>
+  <script>
+    function calculateStandings() {
+      let standings = {};
+      eplTeams.forEach(team => {
+        standings[team] = { played: 0, won: 0, drawn: 0, lost: 0, gf: 0, ga: 0, gd: 0, pts: 0 };
+      });
+
+      allMatches.forEach(m => {
+        if(m.homeScore !== "" && m.awayScore !== "" && !isNaN(m.homeScore) && !isNaN(m.awayScore)) {
+          let hs = parseInt(m.homeScore);
+          let as = parseInt(m.awayScore);
+          let home = m.home;
+          let away = m.away;
+
+          if(standings[home] && standings[away]) {
+            standings[home].played++;
+            standings[away].played++;
+
+            standings[home].gf += hs;
+            standings[home].ga += as;
+            standings[away].gf += as;
+            standings[away].ga += hs;
+
+            if(hs > as) {
+              standings[home].won++;
+              standings[home].pts += 3;
+              standings[away].lost++;
+            } else if(hs < as) {
+              standings[away].won++;
+              standings[away].pts += 3;
+              standings[home].lost++;
+            } else {
+              standings[home].drawn++;
+              standings[home].pts += 1;
+              standings[away].drawn++;
+              standings[away].pts += 1;
+            }
+          }
+        }
+      });
+
+      Object.keys(standings).forEach(team => {
+        standings[team].gd = standings[team].gf - standings[team].ga;
+      });
+
+      return standings;
+    }
+
+    let standingsData = calculateStandings();
+    let sortedTeams = Object.keys(standingsData).sort((a, b) => {
+      let tA = standingsData[a];
+      let tB = standingsData[b];
+      if(tB.pts !== tA.pts) return tB.pts - tA.pts;
+      if(tB.gd !== tA.gd) return tB.gd - tA.gd;
+      return tB.gf - tA.gf;
+    });
+
+    const tbody = document.getElementById('points-tbody');
+    sortedTeams.forEach((team, index) => {
+      let t = standingsData[team];
+      tbody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${team}</td>
+          <td>${t.played}</td>
+          <td>${t.won}</td>
+          <td>${t.drawn}</td>
+          <td>${t.lost}</td>
+          <td>${t.gd > 0 ? '+' + t.gd : t.gd}</td>
+          <td><b>${t.pts}</b></td>
+        </tr>
+      `;
+    });
+  </script>
+</body>
+</html>

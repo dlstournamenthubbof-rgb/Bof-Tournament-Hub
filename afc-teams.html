@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AFC Asian Cup - Teams</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #0c1c38 0%, #060a12 100%);
+      --card-bg: rgba(20, 30, 50, 0.7);
+      --card-border: rgba(56, 189, 248, 0.3);
+      --accent-color: #38bdf8;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: var(--bg-gradient); color: var(--text-main); min-height: 100vh; padding: 20px 15px; }
+    .container { max-width: 480px; margin: 0 auto; }
+
+    .page-header {
+      background: var(--card-bg); backdrop-filter: blur(25px);
+      border: 1px solid var(--card-border); border-radius: 24px;
+      padding: 20px; margin-bottom: 25px; text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(56, 189, 248, 0.2);
+    }
+    .page-header h2 {
+      font-size: 1.3rem; color: #fff; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    }
+    .page-header h2 i { color: var(--accent-color); filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6)); }
+
+    .group-box {
+      background: rgba(10, 15, 28, 0.8); backdrop-filter: blur(20px);
+      border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 18px; padding: 16px; margin-bottom: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+    .group-name { color: var(--accent-color); font-size: 1rem; font-weight: 700; margin-bottom: 12px; border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 6px; }
+    .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .team-item { background: rgba(20, 30, 50, 0.7); border: 1px solid rgba(56, 189, 248, 0.2); padding: 10px 12px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; color: #fff; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="page-header">
+      <h2><i class="fa-solid fa-flag"></i> AFC Teams</h2>
+    </div>
+
+    <div class="group-box">
+      <div class="group-name">Group A</div>
+      <div class="team-grid">
+        <div class="team-item">Australia</div>
+        <div class="team-item">Iran</div>
+        <div class="team-item">Jordan</div>
+        <div class="team-item">Uzbekistan</div>
+      </div>
+    </div>
+
+    <div class="group-box">
+      <div class="group-name">Group B</div>
+      <div class="team-grid">
+        <div class="team-item">Bangladesh</div>
+        <div class="team-item">Oman</div>
+        <div class="team-item">Qatar</div>
+        <div class="team-item">United Arab Emirates (UAE)</div>
+      </div>
+    </div>
+
+    <div class="group-box">
+      <div class="group-name">Group C</div>
+      <div class="team-grid">
+        <div class="team-item">Bahrain</div>
+        <div class="team-item">Iraq</div>
+        <div class="team-item">Japan</div>
+        <div class="team-item">Thailand</div>
+      </div>
+    </div>
+
+    <div class="group-box">
+      <div class="group-name">Group D</div>
+      <div class="team-grid">
+        <div class="team-item">Indonesia</div>
+        <div class="team-item">Saudi Arabia</div>
+        <div class="team-item">South Korea</div>
+        <div class="team-item">Vietnam</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

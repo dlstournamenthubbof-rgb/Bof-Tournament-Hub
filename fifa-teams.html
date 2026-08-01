@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DLS World Cup - Teams & Groups</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #0c1c38 0%, #060a12 100%);
+      --card-bg: rgba(20, 30, 50, 0.7);
+      --card-border: rgba(56, 189, 248, 0.3);
+      --accent-color: #38bdf8;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: var(--bg-gradient); color: var(--text-main); min-height: 100vh; padding: 20px 15px; }
+    .container { max-width: 480px; margin: 0 auto; }
+
+    /* Page Header */
+    .page-header {
+      background: var(--card-bg); backdrop-filter: blur(25px);
+      border: 1px solid var(--card-border); border-radius: 24px;
+      padding: 20px; margin-bottom: 25px; text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(56, 189, 248, 0.2);
+    }
+    .page-header h2 {
+      font-size: 1.3rem; color: #fff; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    }
+    .page-header h2 i { color: var(--accent-color); filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6)); }
+
+    /* Section Title */
+    .section-title {
+      color: var(--accent-color); margin: 25px 0 14px 0; font-size: 1rem; font-weight: 700;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 8px;
+      display: flex; align-items: center; gap: 8px;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+    }
+
+    /* Match Card with Glowing Border */
+    .match-card-wrapper { margin-bottom: 10px; }
+    
+    .match-box {
+      background: rgba(10, 15, 28, 0.8); backdrop-filter: blur(20px);
+      border-radius: 18px; padding: 14px 18px;
+      display: flex; justify-content: space-between; align-items: center;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.1);
+      transition: 0.3s ease;
+    }
+    .match-box:hover {
+      border-color: rgba(56, 189, 248, 0.8);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6), 0 0 20px rgba(56, 189, 248, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .team-name { font-weight: 700; font-size: 0.9rem; color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.2); }
+    .team-index {
+      background: rgba(56, 189, 248, 0.15); color: var(--accent-color);
+      width: 28px; height: 28px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.8rem; border: 1px solid rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="page-header">
+      <h2><i class="fa-solid fa-shield-halved"></i> Teams & Groups</h2>
+    </div>
+    <div id="groups-container"></div>
+  </div>
+
+  <script>
+    // আসল ৩২টি দল ও গ্রুপ ডেটা অপরিবর্তিত রাখা হয়েছে
+    let groups = {
+      "Group A": ["Argentina", "Italy", "Mexico", "Canada"],
+      "Group B": ["Brazil", "Germany", "France", "Spain"],
+      "Group C": ["England", "Portugal", "Netherlands", "Belgium"],
+      "Group D": ["Croatia", "Uruguay", "Denmark", "Switzerland"],
+      "Group E": ["USA", "Colombia", "Japan", "Senegal"],
+      "Group F": ["South Korea", "Morocco", "Cameroon", "Poland"],
+      "Group G": ["Sweden", "Austria", "Ukraine", "Serbia"],
+      "Group H": ["Turkey", "Norway", "Scotland", "Ecuador"]
+    };
+
+    const container = document.getElementById('groups-container');
+
+    for (let g in groups) {
+      let groupTeams = groups[g];
+      
+      let html = `<div class="section-title"><i class="fa-solid fa-star"></i> ${g}</div>`;
+
+      groupTeams.forEach((team, index) => {
+        let numStr = (index + 1 < 10) ? "0" + (index + 1) : (index + 1);
+        html += `
+          <div class="match-card-wrapper">
+            <div class="match-box">
+              <div class="team-index">${numStr}</div>
+              <div class="team-name" style="width: 85%; text-align: left; padding-left: 10px;">${team}</div>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML += html;
+    }
+  </script>
+</body>
+</html>

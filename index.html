@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DLS Tournament Hub</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Sidebar Overlay & Menu -->
+  <div id="sidebar-overlay" class="overlay" onclick="toggleSidebar()"></div>
+  
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <h3><i class="fa-solid fa-sliders"></i> Navigation</h3>
+      <i class="fa-solid fa-xmark close-btn" onclick="toggleSidebar()"></i>
+    </div>
+    
+    <div class="sidebar-links">
+      <a href="admin-dashboard.html" class="admin-link">
+        <i class="fa-solid fa-user-shield"></i> Admin Panel
+      </a>
+    </div>
+  </div>
+
+  <!-- Top Navbar -->
+  <header class="navbar">
+    <i class="fa-solid fa-bars-staggered icon-btn" onclick="toggleSidebar()"></i>
+    <div class="logo">
+      <i class="fa-solid fa-trophy trophy-logo"></i>
+      <span>DLS <b>TOURNAMENT HUB</b></span>
+    </div>
+    <i class="fa-regular fa-bell icon-btn"></i>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <p class="welcome">WELCOME TO</p>
+    <h1>DLS TOURNAMENT <span>HUB</span></h1>
+    <p class="subtitle">⚽ The Ultimate Football Tournament Platform</p>
+  </section>
+
+  <!-- Tournament Buttons List (5 Tournaments Fixed) -->
+  <section class="card-container">
+    
+    <!-- 1. FIFA World Cup -->
+    <a href="fifa.html" class="card-link">
+      <div class="card fifa-card">
+        <div class="card-left">
+          <div class="icon-box gold-glow">
+            <i class="fa-solid fa-trophy"></i>
+          </div>
+          <div class="card-info">
+            <h3>FIFA WORLD CUP</h3>
+            <p>32 Teams Official Tournament</p>
+            
+          </div>
+        </div>
+        <div class="arrow-box">
+          <i class="fa-solid fa-arrow-right-long"></i>
+        </div>
+      </div>
+    </a>
+
+    <!-- 2. UEFA Champions League -->
+    <a href="uefa.html" class="card-link">
+      <div class="card uefa-card">
+        <div class="card-left">
+          <div class="icon-box blue-glow">
+            <i class="fa-solid fa-award"></i>
+          </div>
+          <div class="card-info">
+            <h3>UEFA CHAMPIONS LEAGUE</h3>
+            <p>32 Teams Official Tournament</p>
+            
+          </div>
+        </div>
+        <div class="arrow-box">
+          <i class="fa-solid fa-arrow-right-long"></i>
+        </div>
+      </div>
+    </a>
+
+    <!-- 3. Copa America -->
+    <a href="copa.html" class="card-link">
+      <div class="card copa-card">
+        <div class="card-left">
+          <div class="icon-box green-glow">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <div class="card-info">
+            <h3>COPA AMERICA</h3>
+            <p>16 Teams Official Tournament</p>
+         
+          </div>
+        </div>
+        <div class="arrow-box">
+          <i class="fa-solid fa-arrow-right-long"></i>
+        </div>
+      </div>
+    </a>
+
+    <!-- 4. Premier League -->
+    <a href="premier.html" class="card-link">
+      <div class="card premier-card">
+        <div class="card-left">
+          <div class="icon-box blue-glow">
+            <i class="fa-solid fa-crown"></i>
+          </div>
+          <div class="card-info">
+            <h3>PREMIER LEAGUE</h3>
+            <p>20 Teams Official Tournament</p>
+          </div>
+        </div>
+        <div class="arrow-box">
+          <i class="fa-solid fa-arrow-right-long"></i>
+        </div>
+      </div>
+    </a>
+
+    <!-- 5. AFC Asian Cup -->
+    <a href="asian-cup.html" class="card-link">
+      <div class="card asian-card">
+        <div class="card-left">
+          <div class="icon-box gold-glow">
+            <i class="fa-solid fa-globe"></i>
+          </div>
+          <div class="card-info">
+            <h3>AFC ASIAN CUP</h3>
+            <p>16 Teams Official Tournament</p>
+          </div>
+        </div>
+        <div class="arrow-box">
+          <i class="fa-solid fa-arrow-right-long"></i>
+        </div>
+      </div>
+    </a>
+
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

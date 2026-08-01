@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premier - Admin Panel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-gradient: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #090514 100%);
+      --card-bg: rgba(30, 27, 75, 0.7);
+      --card-border: rgba(168, 85, 247, 0.3);
+      --primary-color: #c084fc;
+      --accent-color: #c084fc;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body { background: var(--bg-gradient); color: var(--text-main); min-height: 100vh; padding: 20px 15px; }
+    .container { max-width: 480px; margin: 0 auto; }
+    
+    .admin-header {
+      background: var(--card-bg); backdrop-filter: blur(25px);
+      border: 1px solid var(--card-border); border-radius: 24px;
+      padding: 20px; margin-bottom: 25px; text-align: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(168, 85, 247, 0.2);
+    }
+    .admin-header h1 {
+      font-size: 1.3rem; color: #fff; font-weight: 800;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      text-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+    }
+    .admin-header h1 i { color: var(--accent-color); filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.6)); }
+
+    .admin-actions-bar {
+      display: flex; gap: 10px; margin-bottom: 25px;
+    }
+    .action-btn {
+      flex: 1; padding: 10px 8px; border-radius: 14px; font-size: 0.72rem; font-weight: 700; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px; transition: 0.3s; color: #fff;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+    .btn-reset { background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; }
+    .btn-export { background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; }
+    .btn-import { background: rgba(168, 85, 247, 0.2); border: 1px solid rgba(168, 85, 247, 0.4); color: #c084fc; }
+
+    .section-box {
+      background: rgba(15, 10, 30, 0.8); backdrop-filter: blur(20px);
+      border: 1px solid rgba(168, 85, 247, 0.25); border-radius: 18px; padding: 16px; margin-bottom: 25px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+    
+    .filter-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 15px; scrollbar-width: none; }
+    .filter-tabs::-webkit-scrollbar { display: none; }
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(168, 85, 247, 0.2); color: var(--text-sub);
+      padding: 6px 12px; border-radius: 14px; font-size: 0.72rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.3s;
+    }
+    .filter-btn.active { background: var(--primary-color); color: #1e1b4b; border-color: transparent; font-weight: 700; box-shadow: 0 0 12px rgba(168, 85, 247, 0.5); }
+    
+    .match-card {
+      background: rgba(30, 27, 75, 0.7); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 14px;
+      padding: 12px 14px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;
+    }
+    .match-info-top { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-sub); font-weight: 600; }
+    .match-middle { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .team-name { font-size: 0.82rem; font-weight: 700; width: 35%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #fff; }
+    .score-inputs-box { display: flex; align-items: center; gap: 6px; justify-content: center; width: 30%; }
+    .score-inputs-box input {
+      width: 38px; height: 38px; background: rgba(10, 5, 20, 0.9); border: 1px solid rgba(168, 85, 247, 0.3); color: #fff;
+      text-align: center; border-radius: 10px; font-weight: bold; font-size: 0.95rem; outline: none;
+    }
+    .score-inputs-box span { font-weight: bold; color: var(--accent-color); }
+    
+    .save-match-btn {
+      width: 100%; background: linear-gradient(135deg, #c084fc, #9333ea); color: #1e1b4b; border: none;
+      padding: 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 800; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    
+    .success-alert {
+      background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399;
+      padding: 10px 14px; border-radius: 14px; margin-bottom: 20px; font-size: 0.8rem; display: none; text-align: center; font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="admin-header">
+      <h1><i class="fa-solid fa-gear"></i> Premier Admin</h1>
+    </header>
+
+    <div id="alertBox" class="success-alert"></div>
+
+    <div class="admin-actions-bar">
+      <button class="action-btn btn-reset" onclick="resetTournament()"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+      <button class="action-btn btn-export" onclick="exportTournamentData()"><i class="fa-solid fa-download"></i> Save/Export</button>
+      <button class="action-btn btn-import" onclick="triggerImport()"><i class="fa-solid fa-upload"></i> Import</button>
+      <input type="file" id="importFile" style="display: none;" accept=".json" onchange="importTournamentData(event)">
+    </div>
+
+    <div class="section-box">
+      <div class="filter-tabs" id="round-filters"></div>
+      <div id="admin-fixtures-container"></div>
+    </div>
+  </div>
+
+  <script src="epl-core.js"></script>
+  <script>
+    let currentFilter = 'Round 1';
+
+    const filterTabsContainer = document.getElementById('round-filters');
+    for(let r = 1; r <= 19; r++) {
+      let rName = `Round ${r}`;
+      filterTabsContainer.innerHTML += `<button class="filter-btn ${r === 1 ? 'active' : ''}" onclick="filterMatches('${rName}', this)">R-${r}</button>`;
+    }
+
+    function renderAdminFixtures() {
+      const container = document.getElementById('admin-fixtures-container');
+      container.innerHTML = '';
+
+      allMatches.forEach((match, index) => {
+        if (match.stage !== currentFilter) return;
+
+        container.innerHTML += `
+          <div class="match-card">
+            <div class="match-info-top">
+              <span>Match #${match.id}</span>
+              <span style="color: #c084fc;">${match.stage}</span>
+            </div>
+            <div class="match-middle">
+              <div class="team-name" style="text-align: right;">${match.home}</div>
+              <div class="score-inputs-box">
+                <input type="number" id="hs_${index}" value="${match.homeScore !== undefined ? match.homeScore : ''}" min="0">
+                <span>:</span>
+                <input type="number" id="as_${index}" value="${match.awayScore !== undefined ? match.awayScore : ''}" min="0">
+              </div>
+              <div class="team-name" style="text-align: left;">${match.away}</div>
+            </div>
+            <button class="save-match-btn" onclick="saveAdminMatch(${index})">
+              <i class="fa-solid fa-floppy-disk"></i> Save Score
+            </button>
+          </div>
+        `;
+      });
+    }
+
+    function filterMatches(stage, btn) {
+      currentFilter = stage;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderAdminFixtures();
+    }
+
+    function saveAdminMatch(index) {
+      allMatches[index].homeScore = document.getElementById(`hs_${index}`).value;
+      allMatches[index].awayScore = document.getElementById(`as_${index}`).value;
+
+      saveToStorage();
+      showAlert("Score Saved Successfully!");
+      renderAdminFixtures();
+    }
+
+    function resetTournament() {
+      if(confirm("Are you sure you want to reset all scores?")) {
+        localStorage.removeItem(storageKey);
+        location.reload();
+      }
+    }
+
+    function exportTournamentData() {
+      let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tournamentData, null, 2));
+      let downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "premier_tournament_backup.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showAlert("Data Exported Successfully!");
+    }
+
+    function triggerImport() {
+      document.getElementById('importFile').click();
+    }
+
+    function importTournamentData(event) {
+      let fileReader = new FileReader();
+      if(event.target.files[0]) {
+        fileReader.readAsText(event.target.files[0], "UTF-8");
+        fileReader.onload = function(e) {
+          try {
+            let importedData = JSON.parse(e.target.result);
+            if(importedData && importedData.matches) {
+              tournamentData = importedData;
+              allMatches = tournamentData.matches;
+              saveToStorage();
+              renderAdminFixtures();
+              showAlert("Data Imported Successfully!");
+            } else {
+              alert("Invalid file format!");
+            }
+          } catch(err) {
+            alert("Error parsing JSON!");
+          }
+        }
+      }
+    }
+
+    function showAlert(msg) {
+      const alertBox = document.getElementById('alertBox');
+      alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${msg}`;
+      alertBox.style.display = 'block';
+      setTimeout(() => { alertBox.style.display = 'none'; }, 2000);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderAdminFixtures();
+    });
+  </script>
+</body>
+</html>

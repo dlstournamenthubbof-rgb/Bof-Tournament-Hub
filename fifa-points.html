@@ -19,46 +19,34 @@
     body { background: var(--bg-gradient); color: var(--text-main); min-height: 100vh; padding: 20px 15px; }
     .container { max-width: 480px; margin: 0 auto; }
 
-    /* Page Header */
     .page-header {
       background: var(--card-bg); backdrop-filter: blur(25px);
       border: 1px solid var(--card-border); border-radius: 24px;
       padding: 20px; margin-bottom: 25px; text-align: center;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(56, 189, 248, 0.2);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
     }
     .page-header h2 {
       font-size: 1.3rem; color: #fff; font-weight: 800;
       display: flex; align-items: center; justify-content: center; gap: 10px;
-      text-transform: uppercase; letter-spacing: 0.5px;
-      text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+      text-transform: uppercase;
     }
-    .page-header h2 i { color: var(--accent-color); filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6)); }
+    .page-header h2 i { color: var(--accent-color); }
 
-    /* Section Title */
     .section-title {
       color: var(--accent-color); margin: 25px 0 14px 0; font-size: 1rem; font-weight: 700;
       border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 8px;
       display: flex; align-items: center; gap: 8px;
-      text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
     }
 
-    /* Table Card Box */
     .table-box {
       background: rgba(10, 15, 28, 0.8); backdrop-filter: blur(20px);
       border-radius: 18px; padding: 14px; margin-bottom: 15px;
       border: 1px solid rgba(56, 189, 248, 0.25);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.1);
-      transition: 0.3s ease;
     }
-    .table-box:hover {
-      border-color: rgba(56, 189, 248, 0.7);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.6), 0 0 20px rgba(56, 189, 248, 0.25);
-    }
-
     table { width: 100%; border-collapse: collapse; font-size: 0.8rem; text-align: center; }
     th, td { padding: 8px 4px; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text-main); }
     th { color: var(--text-sub); font-weight: 600; }
-    td:nth-child(2) { text-align: left; font-weight: 600; color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.2); }
+    td:nth-child(2) { text-align: left; font-weight: 600; color: #fff; }
   </style>
 </head>
 <body>
@@ -75,14 +63,14 @@
     const tableData = getCalculatedTable();
 
     let groups = {
-      "Group A": ["Argentina", "Italy", "Mexico", "Canada"],
-      "Group B": ["Brazil", "Germany", "France", "Spain"],
-      "Group C": ["England", "Portugal", "Netherlands", "Belgium"],
-      "Group D": ["Croatia", "Uruguay", "Denmark", "Switzerland"],
-      "Group E": ["USA", "Colombia", "Japan", "Senegal"],
-      "Group F": ["South Korea", "Morocco", "Cameroon", "Poland"],
-      "Group G": ["Sweden", "Austria", "Ukraine", "Serbia"],
-      "Group H": ["Turkey", "Norway", "Scotland", "Ecuador"]
+      "Group A": ["Spain", "Argentina", "Uruguay", "Senegal"],
+      "Group B": ["France", "England", "Switzerland", "Italy"],
+      "Group C": ["Brazil", "Morocco", "USA", "Japan"],
+      "Group D": ["Portugal", "Belgium", "Norway", "Colombia"],
+      "Group E": ["Netherlands", "Mexico", "Germany", "Croatia"],
+      "Group F": ["Sweden", "Austria", "Ukraine", "Serbia"],
+      "Group G": ["Turkey", "Cameroon", "Poland", "Scotland"],
+      "Group H": ["Canada", "South Korea", "Denmark", "Ecuador"]
     };
 
     for (let g in groups) {
@@ -117,7 +105,7 @@
             <td>${t.draw}</td>
             <td>${t.loss}</td>
             <td>${t.gd}</td>
-            <td style="font-weight: 800; color: var(--accent-color); text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);">${t.pts}</td>
+            <td style="font-weight: 800; color: var(--accent-color);">${t.pts}</td>
           </tr>
         `;
       });

@@ -1,550 +1,1197 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>AFC Asian Cup - Knockout Bracket</title>
-
-  <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet">
-
-  <style>
-    :root {
-      --bg-gradient: radial-gradient(
-        circle at 50% 0%,
-        #0c1c38 0%,
-        #060a12 100%
-      );
-
-      --card-bg: rgba(20, 30, 50, 0.85);
-      --card-border: rgba(56, 189, 248, 0.3);
-      --accent-color: #38bdf8;
-      --text-main: #f8fafc;
-      --text-sub: #94a3b8;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
-    body {
-      background: var(--bg-gradient);
-      color: var(--text-main);
-      min-height: 100vh;
-      padding: 10px;
-    }
-
-    .container {
-      max-width: 100%;
-      width: 100%;
-      margin: 0 auto;
-      overflow-x: hidden;
-    }
-
-    /* HEADER */
-
-    .page-header {
-      background: var(--card-bg);
-      backdrop-filter: blur(25px);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
-      padding: 12px;
-      margin-bottom: 15px;
-      text-align: center;
 
-      box-shadow:
-        0 10px 25px rgba(0,0,0,0.6),
-        0 0 20px rgba(56,189,248,0.2);
-    }
+<meta charset="UTF-8">
 
-    .page-header h2 {
-      font-size: 1.1rem;
-      color: #fff;
-      font-weight: 800;
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
+<title>AFC Asian Cup - Knockout</title>
 
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-      text-shadow:
-        0 0 12px rgba(56,189,248,0.4);
-    }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
 
-    .page-header h2 i {
-      color: var(--accent-color);
 
-      filter:
-        drop-shadow(
-          0 0 10px rgba(56,189,248,0.6)
-        );
-    }
+<style>
 
-    /* SCROLL */
+/* =====================================================
+   ROOT
+===================================================== */
 
-    .bracket-scroll-container {
-      width: 100%;
-      overflow-x: auto;
-      padding-bottom: 15px;
+:root{
 
-      -webkit-overflow-scrolling: touch;
+  --bg:#050914;
 
-      scrollbar-width: thin;
-      scrollbar-color:
-        var(--accent-color)
-        rgba(10,15,28,0.8);
-    }
+  --panel:#0c1424;
 
-    .bracket-scroll-container::-webkit-scrollbar {
-      height: 6px;
-    }
+  --card:#111c2d;
 
-    .bracket-scroll-container::-webkit-scrollbar-thumb {
-      background: var(--accent-color);
-      border-radius: 10px;
-    }
+  --card2:#0d1728;
 
-    /* BRACKET */
+  --border:rgba(56,189,248,.25);
 
-    .bracket-wrapper {
-      display: flex;
+  --blue:#38bdf8;
 
-      min-width: 750px;
+  --green:#34d399;
 
-      gap: 15px;
+  --gold:#facc15;
 
-      align-items: center;
-      justify-content: space-between;
+  --muted:#94a3b8;
 
-      padding: 5px;
-    }
+  --white:#f8fafc;
 
-    .bracket-side {
-      display: flex;
-      gap: 12px;
+}
 
-      flex: 1;
-    }
 
-    .round-column {
-      display: flex;
-      flex-direction: column;
+/* =====================================================
+   RESET
+===================================================== */
 
-      gap: 15px;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 
-      flex: 1;
+  font-family:'Poppins',sans-serif;
+}
 
-      justify-content: center;
-    }
 
-    .column-title {
-      font-size: 0.72rem;
+html,
+body{
 
-      font-weight: 700;
+  width:100%;
 
-      color: var(--accent-color);
+  min-height:100%;
 
-      text-align: center;
+  overflow-x:hidden;
 
-      background: rgba(10,15,28,0.9);
+}
 
-      padding: 6px 4px;
 
-      border-radius: 10px;
+body{
 
-      border:
-        1px solid
-        rgba(56,189,248,0.3);
+  background:
 
-      text-shadow:
-        0 0 8px
-        rgba(56,189,248,0.4);
+    radial-gradient(
+      circle at 50% 0%,
+      #102442 0%,
+      #050914 50%,
+      #03060d 100%
+    );
 
-      margin-bottom: 6px;
-    }
+  color:var(--white);
 
-    /* MATCH */
+  padding:8px;
 
-    .match-card-wrapper {
-      position: relative;
-    }
+}
 
-    .match-info-top {
-      font-size: 0.58rem;
 
-      color: var(--text-sub);
+/* =====================================================
+   MAIN
+===================================================== */
 
-      text-align: center;
+.container{
 
-      margin-bottom: 2px;
+  width:100%;
 
-      font-weight: 600;
-    }
+  max-width:520px;
 
-    .match-box {
-      background: var(--card-bg);
+  margin:auto;
 
-      backdrop-filter: blur(20px);
+}
 
-      border-radius: 12px;
 
-      padding: 8px 10px;
+/* =====================================================
+   HEADER
+===================================================== */
 
-      display: flex;
+.header{
 
-      justify-content: space-between;
+  background:
+    rgba(12,22,39,.92);
 
-      align-items: center;
+  border:
+    1px solid
+    var(--border);
 
-      border:
-        1px solid
-        rgba(56,189,248,0.25);
+  border-radius:16px;
 
-      box-shadow:
-        0 5px 15px
-        rgba(0,0,0,0.5);
+  padding:10px;
 
-      transition: 0.25s ease;
-    }
+  text-align:center;
 
-    .match-box:hover {
-      border-color:
-        rgba(56,189,248,0.7);
+  margin-bottom:8px;
 
-      box-shadow:
-        0 6px 20px
-        rgba(0,0,0,0.6),
-        0 0 15px
-        rgba(56,189,248,0.25);
-    }
+  box-shadow:
+    0 8px 20px
+    rgba(0,0,0,.5);
 
-    .team {
-      width: 36%;
+}
 
-      font-weight: 700;
 
-      font-size: 0.7rem;
+.header-title{
 
-      color: #fff;
+  font-size:.95rem;
 
-      overflow: hidden;
+  font-weight:800;
 
-      text-overflow: ellipsis;
+  letter-spacing:.5px;
 
-      white-space: nowrap;
-    }
+}
 
-    .score-box {
-      background:
-        linear-gradient(
-          135deg,
-          rgba(5,10,20,0.95),
-          rgba(20,30,50,0.9)
-        );
 
-      padding: 4px 8px;
+.header-title i{
 
-      border-radius: 6px;
+  color:var(--blue);
 
-      font-weight: 800;
+  margin-right:5px;
 
-      color: var(--accent-color);
+}
 
-      font-size: 0.78rem;
 
-      border:
-        1px solid
-        rgba(56,189,248,0.4);
+.live{
 
-      box-shadow:
-        0 0 10px
-        rgba(56,189,248,0.15);
-    }
+  color:var(--green);
 
-    /* CENTER */
+  font-size:.55rem;
 
-    .center-bracket {
-      width: 220px;
+  font-weight:700;
 
-      display: flex;
+  margin-top:1px;
 
-      flex-direction: column;
+}
 
-      align-items: center;
 
-      gap: 12px;
+/* =====================================================
+   SECTION TITLE
+===================================================== */
 
-      text-align: center;
+.section-title{
 
-      background:
-        rgba(10,15,28,0.7);
+  display:flex;
 
-      padding: 15px 10px;
+  align-items:center;
 
-      border-radius: 16px;
+  justify-content:center;
 
-      border:
-        1px solid
-        rgba(56,189,248,0.3);
+  gap:6px;
 
-      flex-shrink: 0;
-    }
+  font-size:.65rem;
 
-    .trophy-title {
-      font-size: 0.8rem;
+  font-weight:800;
 
-      font-weight: 800;
+  color:var(--blue);
 
-      color: #facc15;
+  margin:7px 0 5px;
 
-      letter-spacing: 1px;
+}
 
-      margin-top: 4px;
 
-      text-shadow:
-        0 0 10px
-        rgba(250,204,21,0.4);
-    }
+.section-title::before,
+.section-title::after{
 
-    .sub-section {
-      width: 100%;
+  content:"";
 
-      margin-top: 5px;
+  height:1px;
 
-      border-top:
-        1px dashed
-        rgba(56,189,248,0.3);
+  background:
+    rgba(56,189,248,.25);
 
-      padding-top: 10px;
-    }
+  flex:1;
 
-    .sub-title {
-      font-size: 0.65rem;
+}
 
-      font-weight: 700;
 
-      color: var(--text-sub);
+/* =====================================================
+   QUARTER FINAL
+===================================================== */
 
-      margin-bottom: 6px;
+.qf-grid{
 
-      text-transform: uppercase;
-    }
+  display:grid;
 
-    /* LIVE UPDATE */
+  grid-template-columns:
+    1fr 1fr;
 
-    .live-status {
-      text-align: center;
+  gap:6px;
 
-      font-size: 0.6rem;
+}
 
-      color: #34d399;
 
-      margin-top: 5px;
+.match-card{
 
-      font-weight: 600;
-    }
-  </style>
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18,31,52,.97),
+      rgba(8,15,27,.98)
+    );
+
+  border:
+    1px solid
+    rgba(56,189,248,.22);
+
+  border-radius:9px;
+
+  padding:6px;
+
+  box-shadow:
+    0 5px 12px
+    rgba(0,0,0,.35);
+
+}
+
+
+.match-number{
+
+  text-align:center;
+
+  color:var(--muted);
+
+  font-size:.48rem;
+
+  font-weight:600;
+
+  margin-bottom:3px;
+
+}
+
+
+.team{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  min-height:21px;
+
+  padding:2px 4px;
+
+  border-radius:4px;
+
+}
+
+
+.team.winner{
+
+  background:
+    rgba(52,211,153,.08);
+
+}
+
+
+.team-name{
+
+  font-size:.57rem;
+
+  font-weight:700;
+
+  max-width:82%;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+  white-space:nowrap;
+
+}
+
+
+.team-name.tbd{
+
+  color:#64748b;
+
+}
+
+
+.score{
+
+  color:var(--blue);
+
+  font-size:.61rem;
+
+  font-weight:800;
+
+}
+
+
+.winner .score{
+
+  color:var(--green);
+
+}
+
+
+/* =====================================================
+   SEMI FINAL
+===================================================== */
+
+.sf-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:10px;
+
+}
+
+
+.sf-card{
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(15,32,50,.98),
+      rgba(7,14,25,.98)
+    );
+
+  border:
+    1px solid
+    rgba(56,189,248,.30);
+
+  border-radius:10px;
+
+  padding:7px;
+
+  box-shadow:
+    0 5px 15px
+    rgba(0,0,0,.4);
+
+}
+
+
+.sf-card .match-number{
+
+  color:var(--blue);
+
+}
+
+
+/* =====================================================
+   FINAL AREA
+===================================================== */
+
+.final-section{
+
+  margin-top:7px;
+
+}
+
+
+.final-card{
+
+  max-width:310px;
+
+  margin:auto;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(48,39,12,.65),
+      rgba(13,18,29,.98)
+    );
+
+  border:
+    1px solid
+    rgba(250,204,21,.45);
+
+  border-radius:13px;
+
+  padding:9px;
+
+  box-shadow:
+    0 0 22px
+    rgba(250,204,21,.08);
+
+}
+
+
+.final-heading{
+
+  text-align:center;
+
+  color:var(--gold);
+
+  font-size:.65rem;
+
+  font-weight:800;
+
+  letter-spacing:1px;
+
+  margin-bottom:5px;
+
+}
+
+
+.trophy{
+
+  text-align:center;
+
+  margin-bottom:3px;
+
+}
+
+
+.trophy i{
+
+  color:var(--gold);
+
+  font-size:25px;
+
+  filter:
+    drop-shadow(
+      0 0 8px
+      rgba(250,204,21,.5)
+    );
+
+}
+
+
+/* =====================================================
+   CHAMPION
+===================================================== */
+
+.champion{
+
+  max-width:310px;
+
+  margin:6px auto 0;
+
+  padding:6px;
+
+  border-radius:8px;
+
+  background:
+    rgba(250,204,21,.07);
+
+  border:
+    1px solid
+    rgba(250,204,21,.22);
+
+  text-align:center;
+
+}
+
+
+.champion-label{
+
+  color:var(--gold);
+
+  font-size:.48rem;
+
+  font-weight:700;
+
+}
+
+
+.champion-name{
+
+  font-size:.72rem;
+
+  font-weight:800;
+
+  margin-top:1px;
+
+}
+
+
+/* =====================================================
+   THIRD PLACE
+===================================================== */
+
+.third{
+
+  max-width:310px;
+
+  margin:7px auto 0;
+
+}
+
+
+.third-title{
+
+  text-align:center;
+
+  color:var(--muted);
+
+  font-size:.5rem;
+
+  font-weight:700;
+
+  margin-bottom:3px;
+
+}
+
+
+.third .match-card{
+
+  border-color:
+    rgba(148,163,184,.20);
+
+}
+
+
+/* =====================================================
+   EMPTY
+===================================================== */
+
+.empty{
+
+  text-align:center;
+
+  color:#64748b;
+
+  font-size:.57rem;
+
+  padding:7px;
+
+}
+
+
+/* =====================================================
+   VERY SMALL SCREEN
+===================================================== */
+
+@media(max-width:360px){
+
+  body{
+    padding:5px;
+  }
+
+
+  .header{
+    padding:8px;
+  }
+
+
+  .header-title{
+    font-size:.82rem;
+  }
+
+
+  .qf-grid{
+    gap:4px;
+  }
+
+
+  .sf-grid{
+    gap:6px;
+  }
+
+
+  .match-card,
+  .sf-card{
+    padding:5px;
+  }
+
+
+  .team-name{
+    font-size:.52rem;
+  }
+
+
+  .score{
+    font-size:.56rem;
+  }
+
+}
+
+
+/* =====================================================
+   DESKTOP
+===================================================== */
+
+@media(min-width:700px){
+
+  .container{
+    max-width:700px;
+  }
+
+
+  .header-title{
+    font-size:1.15rem;
+  }
+
+
+  .qf-grid,
+  .sf-grid{
+    gap:10px;
+  }
+
+
+  .team-name{
+    font-size:.68rem;
+  }
+
+
+  .score{
+    font-size:.72rem;
+  }
+
+}
+
+</style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-  <!-- HEADER -->
 
-  <div class="page-header">
+  <!-- =================================================
+       HEADER
+  ================================================== -->
 
-    <h2>
-      <i class="fa-solid fa-sitemap"></i>
-      Knockout Phase Schedule
-    </h2>
+  <div class="header">
 
-    <div class="live-status">
+    <div class="header-title">
+
+      <i class="fa-solid fa-trophy"></i>
+
+      AFC ASIAN CUP — KNOCKOUT
+
+    </div>
+
+    <div class="live">
+
       ● LIVE DATA
+
     </div>
 
   </div>
 
 
-  <!-- BRACKET -->
 
-  <div class="bracket-scroll-container">
+  <!-- =================================================
+       QUARTER FINAL
+  ================================================== -->
 
-    <div class="bracket-wrapper">
+  <div class="section-title">
 
-      <!-- LEFT -->
+    QUARTER-FINAL
 
-      <div class="bracket-side">
-
-        <!-- QF -->
-
-        <div class="round-column">
-
-          <div class="column-title">
-            QUARTER-FINAL
-          </div>
-
-          <div id="qf-left"></div>
-
-        </div>
+  </div>
 
 
-        <!-- SF -->
+  <div
+    id="qf-container"
+    class="qf-grid">
 
-        <div class="round-column">
-
-          <div class="column-title">
-            SEMIFINAL
-          </div>
-
-          <div id="sf-left"></div>
-
-        </div>
-
-      </div>
+  </div>
 
 
-      <!-- CENTER -->
 
-      <div class="center-bracket">
+  <!-- =================================================
+       SEMI FINAL
+  ================================================== -->
 
-        <div class="trophy-box">
+  <div class="section-title">
 
-          <i
-            class="fa-solid fa-trophy"
-            style="
-              font-size:45px;
-              color:#facc15;
-              filter:
-                drop-shadow(
-                  0 0 12px
-                  rgba(250,204,21,0.6)
-                );
-            ">
-          </i>
+    SEMI-FINAL
 
-          <div class="trophy-title">
-            CHAMPION
-          </div>
-
-        </div>
+  </div>
 
 
-        <!-- FINAL -->
+  <div
+    id="sf-container"
+    class="sf-grid">
 
-        <div style="width:100%;">
-
-          <div
-            class="column-title"
-            style="
-              background:
-                linear-gradient(
-                  135deg,
-                  #38bdf8,
-                  #0284c7
-                );
-              color:#0c1c38;
-              font-weight:800;
-              margin-bottom:8px;
-            ">
-
-            FINAL
-
-          </div>
-
-          <div id="final-match"></div>
-
-        </div>
+  </div>
 
 
-        <!-- THIRD PLACE -->
 
-        <div class="sub-section">
+  <!-- =================================================
+       FINAL
+  ================================================== -->
 
-          <div class="sub-title">
-            Third Place Match
-          </div>
+  <div class="final-section">
 
-          <div id="bronze-match"></div>
+    <div class="section-title">
 
-        </div>
+      FINAL
+
+    </div>
+
+
+    <div class="final-card">
+
+      <div class="trophy">
+
+        <i class="fa-solid fa-trophy"></i>
 
       </div>
 
 
-      <!-- RIGHT -->
+      <div class="final-heading">
 
-      <div class="bracket-side">
+        🏆 CHAMPIONSHIP FINAL
 
-        <!-- SF -->
-
-        <div class="round-column">
-
-          <div class="column-title">
-            SEMIFINAL
-          </div>
-
-          <div id="sf-right"></div>
-
-        </div>
+      </div>
 
 
-        <!-- QF -->
+      <div id="final-container">
 
-        <div class="round-column">
+      </div>
 
-          <div class="column-title">
-            QUARTER-FINAL
-          </div>
+    </div>
 
-          <div id="qf-right"></div>
 
-        </div>
+    <!-- CHAMPION -->
+
+    <div id="champion-container">
+
+    </div>
+
+
+    <!-- THIRD PLACE -->
+
+    <div class="third">
+
+      <div class="third-title">
+
+        THIRD PLACE MATCH
+
+      </div>
+
+
+      <div id="third-container">
 
       </div>
 
     </div>
 
   </div>
+
 
 </div>
 
 
-<!-- IMPORTANT: Firebase Core -->
+
+<!-- =====================================================
+     FIREBASE CORE
+===================================================== -->
 
 <script src="afc-core.js"></script>
 
 
 <script>
 
-  // =========================================================
-  // RENDER SINGLE MATCH
-  // =========================================================
+/* =====================================================
+   GET MATCH
+===================================================== */
 
-  function renderMatchHTML(match) {
+function getMatch(id){
 
-    if (!match) {
+  if(
+    typeof allMatches === "undefined" ||
+    !Array.isArray(allMatches)
+  ){
 
-      return `
-        <div
-          class="match-box"
-          style="
-            justify-content:center;
-            color:var(--text-sub);
-            font-size:0.7rem;
-          ">
+    return null;
+
+  }
+
+
+  return allMatches.find(
+    m =>
+      Number(m.id) === Number(id)
+  ) || null;
+
+}
+
+
+/* =====================================================
+   WINNER
+===================================================== */
+
+function getWinner(match){
+
+  if(!match){
+
+    return "";
+
+  }
+
+
+  if(
+    match.homeScore === "" ||
+    match.awayScore === ""
+  ){
+
+    return "";
+
+  }
+
+
+  const home =
+    Number(match.homeScore);
+
+
+  const away =
+    Number(match.awayScore);
+
+
+  if(home > away){
+
+    return match.home;
+
+  }
+
+
+  if(away > home){
+
+    return match.away;
+
+  }
+
+
+  return "";
+
+}
+
+
+/* =====================================================
+   MATCH HTML
+===================================================== */
+
+function matchHTML(match){
+
+  if(!match){
+
+    return `
+
+      <div class="match-card">
+
+        <div class="empty">
 
           TBD
 
         </div>
-      `
+
+      </div>
+
+    `;
+
+  }
+
+
+  const winner =
+    getWinner(match);
+
+
+  const homeWinner =
+    winner === match.home;
+
+
+  const awayWinner =
+    winner === match.away;
+
+
+  const homeScore =
+    match.homeScore === "" ||
+    match.homeScore === undefined
+      ? "–"
+      : match.homeScore;
+
+
+  const awayScore =
+    match.awayScore === "" ||
+    match.awayScore === undefined
+      ? "–"
+      : match.awayScore;
+
+
+  return `
+
+    <div class="match-card">
+
+      <div class="match-number">
+
+        MATCH #${match.id}
+
+      </div>
+
+
+      <div
+        class="team
+        ${homeWinner ? "winner" : ""}">
+
+        <div class="team-name">
+
+          ${match.home || "TBD"}
+
+        </div>
+
+
+        <div class="score">
+
+          ${homeScore}
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="team
+        ${awayWinner ? "winner" : ""}">
+
+        <div class="team-name">
+
+          ${match.away || "TBD"}
+
+        </div>
+
+
+        <div class="score">
+
+          ${awayScore}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   RENDER
+===================================================== */
+
+function renderKnockout(){
+
+  if(
+    typeof allMatches === "undefined" ||
+    !Array.isArray(allMatches)
+  ){
+
+    return;
+
+  }
+
+
+  /* -----------------------------------------------
+     QUARTER FINAL
+  ------------------------------------------------ */
+
+  const qf1 =
+    getMatch(25);
+
+  const qf2 =
+    getMatch(26);
+
+  const qf3 =
+    getMatch(27);
+
+  const qf4 =
+    getMatch(28);
+
+
+  document.getElementById(
+    "qf-container"
+  ).innerHTML =
+
+    matchHTML(qf1) +
+
+    matchHTML(qf2) +
+
+    matchHTML(qf3) +
+
+    matchHTML(qf4);
+
+
+
+  /* -----------------------------------------------
+     SEMI FINAL
+  ------------------------------------------------ */
+
+  const sf1 =
+    getMatch(29);
+
+  const sf2 =
+    getMatch(30);
+
+
+  document.getElementById(
+    "sf-container"
+  ).innerHTML =
+
+    matchHTML(sf1) +
+
+    matchHTML(sf2);
+
+
+
+  /* -----------------------------------------------
+     FINAL
+  ------------------------------------------------ */
+
+  const final =
+    getMatch(32);
+
+
+  document.getElementById(
+    "final-container"
+  ).innerHTML =
+
+    matchHTML(final);
+
+
+
+  /* -----------------------------------------------
+     THIRD PLACE
+  ------------------------------------------------ */
+
+  const third =
+    getMatch(31);
+
+
+  document.getElementById(
+    "third-container"
+  ).innerHTML =
+
+    matchHTML(third);
+
+
+
+  /* -----------------------------------------------
+     CHAMPION
+  ------------------------------------------------ */
+
+  renderChampion(final);
+
+}
+
+
+/* =====================================================
+   CHAMPION
+===================================================== */
+
+function renderChampion(final){
+
+  const container =
+    document.getElementById(
+      "champion-container"
+    );
+
+
+  if(!container){
+
+    return;
+
+  }
+
+
+  const winner =
+    getWinner(final);
+
+
+  if(!winner){
+
+    container.innerHTML = "";
+
+    return;
+
+  }
+
+
+  container.innerHTML = `
+
+    <div class="champion">
+
+      <div class="champion-label">
+
+        🏆 CHAMPION
+
+      </div>
+
+
+      <div class="champion-name">
+
+        ${winner}
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   FIREBASE READY
+===================================================== */
+
+window.addEventListener(
+  "afcFirebaseReady",
+  function(){
+
+    renderKnockout();
+
+  }
+);
+
+
+/* =====================================================
+   FIREBASE UPDATED
+===================================================== */
+
+window.addEventListener(
+  "afcFirebaseUpdated",
+  function(){
+
+    renderKnockout();
+
+  }
+);
+
+
+/* =====================================================
+   PAGE LOAD
+===================================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function(){
+
+    renderKnockout();
+
+  }
+);
+
+
+/* =====================================================
+   BACKUP REFRESH
+===================================================== */
+
+setInterval(
+  function(){
+
+    renderKnockout();
+
+  },
+  1500
+);
+
+</script>
+
+
+</body>
+</html>

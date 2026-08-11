@@ -1,104 +1,524 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AFC Asian Cup - Match Fixtures & Results</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-gradient: radial-gradient(circle at 50% 0%, #0c1c38 0%, #060a12 100%);
-      --card-bg: rgba(20, 30, 50, 0.7);
-      --card-border: rgba(56, 189, 248, 0.3);
-      --accent-color: #38bdf8;
-      --text-main: #f8fafc;
-      --text-sub: #94a3b8;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-    body { background: var(--bg-gradient); color: var(--text-main); min-height: 100vh; padding: 20px 15px; }
-    .container { max-width: 480px; margin: 0 auto; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .page-header {
-      background: var(--card-bg); backdrop-filter: blur(25px);
-      border: 1px solid var(--card-border); border-radius: 24px;
-      padding: 20px; margin-bottom: 25px; text-align: center;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.6), 0 0 25px rgba(56, 189, 248, 0.2);
-    }
-    .page-header h2 {
-      font-size: 1.3rem; color: #fff; font-weight: 800;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      text-transform: uppercase; letter-spacing: 0.5px;
-      text-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
-    }
-    .page-header h2 i { color: var(--accent-color); filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.6)); }
+<title>AFC Asian Cup - Match Fixtures & Results</title>
 
-    .section-title {
-      color: var(--accent-color); margin: 25px 0 14px 0; font-size: 1rem; font-weight: 700;
-      border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 8px;
-      display: flex; align-items: center; gap: 8px;
-      text-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
-    }
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    .match-card-wrapper { margin-bottom: 12px; }
-    .match-info { font-size: 0.72rem; color: var(--text-sub); text-align: center; margin-bottom: 5px; font-weight: 600; }
-    
-    .match-box {
-      background: rgba(10, 15, 28, 0.8); backdrop-filter: blur(20px);
-      border-radius: 18px; padding: 14px 18px;
-      display: flex; justify-content: space-between; align-items: center;
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.1);
-      transition: 0.3s ease;
-    }
-    .match-box:hover {
-      border-color: rgba(56, 189, 248, 0.8);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.6), 0 0 20px rgba(56, 189, 248, 0.35);
-      transform: translateY(-2px);
-    }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+rel="stylesheet">
 
-    .team { width: 35%; font-weight: 700; font-size: 0.85rem; color: #fff; text-shadow: 0 0 8px rgba(255,255,255,0.2); }
-    
-    .score {
-      background: linear-gradient(135deg, rgba(5, 10, 20, 0.95), rgba(20, 30, 50, 0.9));
-      padding: 8px 16px; border-radius: 12px; font-weight: 800; color: var(--accent-color); font-size: 1rem;
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.2), inset 0 0 8px rgba(56, 189, 248, 0.1);
-    }
-  </style>
+<style>
+
+:root{
+  --bg:#050b18;
+  --card:rgba(15,28,52,.85);
+  --border:rgba(56,189,248,.35);
+  --blue:#38bdf8;
+  --text:#f8fafc;
+  --sub:#94a3b8;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Poppins,sans-serif;
+}
+
+body{
+  min-height:100vh;
+  padding:20px 15px;
+  color:var(--text);
+  background:
+  radial-gradient(circle at 50% 0%,#10284d 0%,#050b18 55%,#020611 100%);
+}
+
+.container{
+  width:100%;
+  max-width:480px;
+  margin:auto;
+}
+
+/* HEADER */
+
+.page-header{
+  background:var(--card);
+  backdrop-filter:blur(25px);
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:22px 15px;
+  margin-bottom:25px;
+  text-align:center;
+  box-shadow:
+    0 15px 35px rgba(0,0,0,.6),
+    0 0 25px rgba(56,189,248,.15);
+}
+
+.page-header h2{
+  font-size:1.25rem;
+  font-weight:800;
+  line-height:1.6;
+  text-transform:uppercase;
+}
+
+.page-header h2 i{
+  color:var(--blue);
+  margin-right:8px;
+}
+
+.status{
+  margin-top:8px;
+  font-size:.72rem;
+  color:var(--sub);
+}
+
+/* SECTION */
+
+.section-title{
+  color:var(--blue);
+  font-size:1rem;
+  font-weight:700;
+  margin:25px 0 12px;
+  padding-bottom:8px;
+  border-bottom:1px solid rgba(56,189,248,.3);
+}
+
+.section-title i{
+  margin-right:7px;
+}
+
+/* MATCH */
+
+.match-card{
+  margin-bottom:12px;
+}
+
+.match-info{
+  text-align:center;
+  color:var(--sub);
+  font-size:.68rem;
+  font-weight:600;
+  margin-bottom:5px;
+}
+
+.match-box{
+  min-height:65px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+
+  padding:12px;
+
+  background:rgba(10,18,34,.9);
+  border:1px solid rgba(56,189,248,.25);
+  border-radius:17px;
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.45);
+}
+
+.team{
+  width:36%;
+  font-size:.78rem;
+  font-weight:700;
+  line-height:1.3;
+}
+
+.home{
+  text-align:right;
+}
+
+.away{
+  text-align:left;
+}
+
+.score{
+  min-width:62px;
+  text-align:center;
+
+  padding:7px 8px;
+
+  background:
+  linear-gradient(
+    135deg,
+    rgba(3,9,20,.98),
+    rgba(20,35,58,.95)
+  );
+
+  color:var(--blue);
+
+  border:1px solid rgba(56,189,248,.4);
+  border-radius:11px;
+
+  font-size:.95rem;
+  font-weight:800;
+
+  box-shadow:
+    0 0 14px rgba(56,189,248,.12);
+}
+
+/* LOADING */
+
+.loading{
+  text-align:center;
+  color:var(--sub);
+  padding:40px 10px;
+  font-size:.85rem;
+}
+
+.loading i{
+  color:var(--blue);
+  margin-right:8px;
+}
+
+/* ERROR */
+
+.error{
+  background:rgba(127,29,29,.25);
+  border:1px solid rgba(248,113,113,.35);
+  border-radius:15px;
+  padding:18px;
+  text-align:center;
+  color:#fecaca;
+  font-size:.8rem;
+}
+
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <div class="page-header">
-      <h2><i class="fa-solid fa-calendar-days"></i> Match Fixtures & Results</h2>
+
+<div class="container">
+
+  <div class="page-header">
+
+    <h2>
+      <i class="fa-solid fa-calendar-days"></i>
+      MATCH FIXTURES & RESULTS
+    </h2>
+
+    <div id="status" class="status">
+      Connecting to Firebase...
     </div>
-    <div id="public-fixtures"></div>
+
   </div>
 
-  <script src="afc-core.js"></script>
-  <script>
-    const container = document.getElementById('public-fixtures');
-    let stages = ["Round 1", "Round 2", "Round 3", "Quarter Final", "Semi Final", "Third Place", "Final"];
+  <div id="fixtures">
 
-    stages.forEach(stage => {
-      let matchesInStage = allMatches.filter(m => m.stage === stage);
-      if(matchesInStage.length > 0) {
-        container.innerHTML += `<div class="section-title"><i class="fa-solid fa-star"></i> ${stage}</div>`;
-        
-        matchesInStage.forEach(m => {
-          container.innerHTML += `
-            <div class="match-card-wrapper">
-              <div class="match-info">Match #${m.id} ${m.group ? '(' + m.group + ')' : ''}</div>
-              <div class="match-box">
-                <div class="team" style="text-align: right;" title="${m.home}">${m.home}</div>
-                <div class="score">${m.homeScore !== "" ? m.homeScore : '-'} : ${m.awayScore !== "" ? m.awayScore : '-'}</div>
-                <div class="team" style="text-align: left;" title="${m.away}">${m.away}</div>
-              </div>
+    <div class="loading">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      Loading fixtures...
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   FIREBASE DIRECT DATABASE
+========================================================= */
+
+const FIREBASE_URL =
+"https://dls-tournament-hub-56554-default-rtdb.firebaseio.com/afc_asian_cup/matches.json";
+
+
+/* =========================================================
+   LOAD FIXTURES
+========================================================= */
+
+async function loadFixtures(){
+
+  const container =
+    document.getElementById("fixtures");
+
+  const status =
+    document.getElementById("status");
+
+  try{
+
+    status.innerHTML =
+      "Connecting to Firebase...";
+
+
+    const response =
+      await fetch(FIREBASE_URL + "?t=" + Date.now());
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "Firebase HTTP error: " +
+        response.status
+      );
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    console.log(
+      "Firebase matches:",
+      data
+    );
+
+
+    if(!data){
+
+      throw new Error(
+        "No match data found in Firebase."
+      );
+
+    }
+
+
+    let matches;
+
+
+    /* Firebase array */
+
+    if(Array.isArray(data)){
+
+      matches = data.filter(Boolean);
+
+    }
+
+    /* Firebase object */
+
+    else{
+
+      matches =
+        Object.keys(data)
+        .map(key => data[key])
+        .filter(Boolean);
+
+    }
+
+
+    if(!matches.length){
+
+      throw new Error(
+        "Matches list is empty."
+      );
+
+    }
+
+
+    /*
+      ID অনুযায়ী সাজানো
+    */
+
+    matches.sort(
+      (a,b) =>
+        Number(a.id || 0) -
+        Number(b.id || 0)
+    );
+
+
+    renderFixtures(matches);
+
+
+    status.innerHTML = `
+      <i
+        class="fa-solid fa-circle"
+        style="
+          color:#22c55e;
+          font-size:7px;
+        "
+      ></i>
+      Live • Firebase Connected
+    `;
+
+
+  }catch(error){
+
+    console.error(
+      "Fixture Firebase error:",
+      error
+    );
+
+
+    status.innerHTML =
+      "Firebase connection failed";
+
+
+    container.innerHTML = `
+
+      <div class="error">
+
+        <i class="fa-solid fa-triangle-exclamation"></i>
+
+        <br><br>
+
+        Fixture load করা যাচ্ছে না।
+
+        <br><br>
+
+        Firebase Database Rules
+        অথবা database connection
+        check করতে হবে।
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function renderFixtures(matches){
+
+  const container =
+    document.getElementById("fixtures");
+
+
+  container.innerHTML = "";
+
+
+  const stages = [
+
+    "Round 1",
+    "Round 2",
+    "Round 3",
+    "Quarter Final",
+    "Semi Final",
+    "Third Place",
+    "Final"
+
+  ];
+
+
+  stages.forEach(stage => {
+
+
+    const stageMatches =
+      matches.filter(
+        m => m.stage === stage
+      );
+
+
+    if(!stageMatches.length)
+      return;
+
+
+    container.innerHTML += `
+
+      <div class="section-title">
+
+        <i class="fa-solid fa-star"></i>
+
+        ${stage}
+
+      </div>
+
+    `;
+
+
+    stageMatches.forEach(match => {
+
+      const home =
+        match.home || "TBD";
+
+      const away =
+        match.away || "TBD";
+
+
+      const hs =
+        match.homeScore !== "" &&
+        match.homeScore !== undefined &&
+        match.homeScore !== null
+          ? match.homeScore
+          : "-";
+
+
+      const as =
+        match.awayScore !== "" &&
+        match.awayScore !== undefined &&
+        match.awayScore !== null
+          ? match.awayScore
+          : "-";
+
+
+      const group =
+        match.group
+          ? " • " + match.group
+          : "";
+
+
+      container.innerHTML += `
+
+        <div class="match-card">
+
+          <div class="match-info">
+
+            Match #${match.id}${group}
+
+          </div>
+
+
+          <div class="match-box">
+
+            <div class="team home">
+              ${home}
             </div>
-          `;
-        });
-      }
+
+
+            <div class="score">
+
+              ${hs} : ${as}
+
+            </div>
+
+
+            <div class="team away">
+              ${away}
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
     });
-  </script>
+
+  });
+
+}
+
+
+/* =========================================================
+   FIRST LOAD
+========================================================= */
+
+loadFixtures();
+
+
+/* =========================================================
+   AUTO REFRESH EVERY 5 SECONDS
+========================================================= */
+
+setInterval(
+  loadFixtures,
+  5000
+);
+
+</script>
+
 </body>
 </html>

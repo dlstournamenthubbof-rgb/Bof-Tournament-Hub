@@ -952,4 +952,521 @@ function updateKnockoutTeams() {
         !standings[match.group] ||
         match.homeScore === "" ||
         match.awayScore === "" ||
-        isNaN
+        isNaN(match.homeScore) ||
+        isNaN(match.awayScore)
+      ) {
+
+        return;
+
+      }
+
+
+      const hs =
+        parseInt(match.homeScore, 10);
+
+      const as =
+        parseInt(match.awayScore, 10);
+
+
+      const home =
+        match.home;
+
+      const away =
+        match.away;
+
+
+      if (
+        !standings[match.group][home] ||
+        !standings[match.group][away]
+      ) {
+
+        return;
+
+      }
+
+
+      standings[match.group][home].played++;
+
+      standings[match.group][away].played++;
+
+
+      standings[match.group][home].gf += hs;
+
+      standings[match.group][home].ga += as;
+
+
+      standings[match.group][away].gf += as;
+
+      standings[match.group][away].ga += hs;
+
+
+      if (hs > as) {
+
+        standings[match.group][home].won++;
+
+        standings[match.group][home].pts += 3;
+
+        standings[match.group][away].lost++;
+
+      }
+
+      else if (hs < as) {
+
+        standings[match.group][away].won++;
+
+        standings[match.group][away].pts += 3;
+
+        standings[match.group][home].lost++;
+
+      }
+
+      else {
+
+        standings[match.group][home].drawn++;
+
+        standings[match.group][away].drawn++;
+
+        standings[match.group][home].pts++;
+
+        standings[match.group][away].pts++;
+
+      }
+
+    });
+
+
+  // --------------------------------
+  // GD
+  // --------------------------------
+
+  Object.keys(groupsConfig)
+    .forEach(function(group) {
+
+      Object.keys(standings[group])
+        .forEach(function(team) {
+
+          standings[group][team].gd =
+            standings[group][team].gf -
+            standings[group][team].ga;
+
+        });
+
+    });
+
+
+  // --------------------------------
+  // RANKING
+  // --------------------------------
+
+  const groupRankings = {};
+
+
+  Object.keys(groupsConfig)
+    .forEach(function(group) {
+
+      const sorted =
+        Object.keys(standings[group])
+          .sort(function(a, b) {
+
+            const A =
+              standings[group][a];
+
+            const B =
+              standings[group][b];
+
+
+            if (B.pts !== A.pts) {
+
+              return B.pts - A.pts;
+
+            }
+
+
+            if (B.gd !== A.gd) {
+
+              return B.gd - A.gd;
+
+            }
+
+
+            return B.gf - A.gf;
+
+          });
+
+
+      const letter =
+        group.replace(
+          "Group ",
+          ""
+        );
+
+
+      groupRankings[letter] = {
+
+        1: sorted[0] || ("1" + letter),
+
+        2: sorted[1] || ("2" + letter)
+
+      };
+
+    });
+
+
+  // --------------------------------
+  // FIND MATCH
+  // --------------------------------
+
+  function getMatch(id) {
+
+    return tournamentData.matches
+      .find(function(match) {
+
+        return match.id === id;
+
+      });
+
+  }
+
+
+  const qf25 = getMatch(25);
+  const qf26 = getMatch(26);
+  const qf27 = getMatch(27);
+  const qf28 = getMatch(28);
+
+
+  if (qf25) {
+
+    qf25.home =
+      groupRankings.A[1];
+
+    qf25.away =
+      groupRankings.B[2];
+
+  }
+
+
+  if (qf26) {
+
+    qf26.home =
+      groupRankings.C[1];
+
+    qf26.away =
+      groupRankings.D[2];
+
+  }
+
+
+  if (qf27) {
+
+    qf27.home =
+      groupRankings.B[1];
+
+    qf27.away =
+      groupRankings.A[2];
+
+  }
+
+
+  if (qf28) {
+
+    qf28.home =
+      groupRankings.D[1];
+
+    qf28.away =
+      groupRankings.C[2];
+
+  }
+
+
+  // --------------------------------
+  // WINNER
+  // --------------------------------
+
+  function getWinner(match) {
+
+    if (
+      !match ||
+      match.homeScore === "" ||
+      match.awayScore === ""
+    ) {
+
+      return null;
+
+    }
+
+
+    const hs =
+      parseInt(match.homeScore, 10);
+
+    const as =
+      parseInt(match.awayScore, 10);
+
+
+    if (isNaN(hs) || isNaN(as)) {
+
+      return null;
+
+    }
+
+
+    if (hs > as) {
+
+      return match.home;
+
+    }
+
+
+    if (as > hs) {
+
+      return match.away;
+
+    }
+
+
+    return null;
+
+  }
+
+
+  // --------------------------------
+  // LOSER
+  // --------------------------------
+
+  function getLoser(match) {
+
+    if (
+      !match ||
+      match.homeScore === "" ||
+      match.awayScore === ""
+    ) {
+
+      return null;
+
+    }
+
+
+    const hs =
+      parseInt(match.homeScore, 10);
+
+    const as =
+      parseInt(match.awayScore, 10);
+
+
+    if (isNaN(hs) || isNaN(as)) {
+
+      return null;
+
+    }
+
+
+    if (hs < as) {
+
+      return match.home;
+
+    }
+
+
+    if (as < hs) {
+
+      return match.away;
+
+    }
+
+
+    return null;
+
+  }
+
+
+  // --------------------------------
+  // SEMI FINAL
+  // --------------------------------
+
+  const sf29 = getMatch(29);
+  const sf30 = getMatch(30);
+
+
+  if (sf29) {
+
+    sf29.home =
+      getWinner(qf25) ||
+      "Winner QF 1";
+
+    sf29.away =
+      getWinner(qf26) ||
+      "Winner QF 2";
+
+  }
+
+
+  if (sf30) {
+
+    sf30.home =
+      getWinner(qf27) ||
+      "Winner QF 3";
+
+    sf30.away =
+      getWinner(qf28) ||
+      "Winner QF 4";
+
+  }
+
+
+  // --------------------------------
+  // THIRD PLACE
+  // --------------------------------
+
+  const third31 =
+    getMatch(31);
+
+
+  if (third31) {
+
+    third31.home =
+      getLoser(sf29) ||
+      "Loser SF 1";
+
+    third31.away =
+      getLoser(sf30) ||
+      "Loser SF 2";
+
+  }
+
+
+  // --------------------------------
+  // FINAL
+  // --------------------------------
+
+  const final32 =
+    getMatch(32);
+
+
+  if (final32) {
+
+    final32.home =
+      getWinner(sf29) ||
+      "Winner SF 1";
+
+    final32.away =
+      getWinner(sf30) ||
+      "Winner SF 2";
+
+  }
+
+}
+
+
+// ============================================================
+// 14. PAGE REFRESH
+// ============================================================
+
+function refreshCurrentPage() {
+
+  try {
+
+    if (
+      typeof renderAdminFixtures ===
+      "function"
+    ) {
+
+      renderAdminFixtures();
+
+    }
+
+
+    if (
+      typeof renderPointsTable ===
+      "function"
+    ) {
+
+      renderPointsTable();
+
+    }
+
+
+    if (
+      typeof renderPublicFixtures ===
+      "function"
+    ) {
+
+      renderPublicFixtures();
+
+    }
+
+
+    if (
+      typeof renderKnockout ===
+      "function"
+    ) {
+
+      renderKnockout();
+
+    }
+
+
+    // Generic event
+
+    window.dispatchEvent(
+
+      new CustomEvent(
+        "afcFirebaseUpdated",
+        {
+          detail: {
+            matches: allMatches
+          }
+        }
+      )
+
+    );
+
+  }
+
+  catch (error) {
+
+    console.error(
+      "Page refresh error:",
+      error
+    );
+
+  }
+
+}
+
+
+// ============================================================
+// 15. START FIREBASE
+// ============================================================
+
+function startAFC() {
+
+  if (
+    document.readyState ===
+    "loading"
+  ) {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      loadFirebaseSDK
+    );
+
+  }
+
+  else {
+
+    loadFirebaseSDK();
+
+  }
+
+}
+
+
+// ============================================================
+// 16. START
+// ============================================================
+
+startAFC();
+
+
+// ============================================================
+// END
+// ============================================================
